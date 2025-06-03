@@ -11,11 +11,14 @@ CONFIG += c++17
 SOURCES += \
     main.cpp \
     mainwindow.cpp \
-    scanner.cpp
+    scanner.cpp \
+    synana.cpp
 
 HEADERS += \
+    global.h \
     mainwindow.h \
-    scanner.h
+    scanner.h \
+    synana.h
 
 FORMS += \
     mainwindow.ui

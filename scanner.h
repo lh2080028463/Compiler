@@ -53,31 +53,24 @@ public:
 
     // 获取下一个Token
     Token getNextToken();
-
-
     // 获取所有Token
     QVector<Token> getAllTokens();
-
     // 获取标识符表
     const QVector<QString>& getITable() const {
         return ITable;
     }
-
     // 获取常整数表
     const QVector<QString>& getC1Table() const {
         return C1Table;
     }
-
     // 获取常实数表
     const QVector<QString>& getC2Table() const {
         return C2Table;
     }
-
     // 获取字符串常量表
     const QVector<QString>& getSTable() const {
         return STable;
     }
-
     // 获取字符常量表
     const QVector<QString>& getCTable() const {
         return CTable;
@@ -94,47 +87,27 @@ private:
 
     // 跳过空白字符
     void skipWhitespace();
-
-
     // 判断是否为界符
     bool isDelimiter(QChar c) const;
-
-
     // 获取界符索引
     int getDelimiterIndex(const QString& value) const;
-
     // 获取关键字索引
     int getKeywordIndex(const QString& value) const;
-
     // 读取界符
     Token readDelimiter(int startPos);
-
     //读取数字
     Token readNumber(int startPos);
-
     // 读取标识符或关键字
     Token readIdentifierOrKeyword(int startPos);
-
     // 读取字符串常量
     Token readStringLiteral();
-
     // 读取字符常量
     Token readCharLiteral();
-
     // 将标识符添加到标识符表中并返回索引
     int addIdentifier(const QString& value);
-
     // 将常数添加到常数表中并返回索引
-    int addConstant(const QString& value, QVector<QString>& table) {
-        auto it = std::find(table.begin(), table.end(), value);
-        if (it != table.end()) {
-            return std::distance(table.begin(), it) + 1;
-        }
-        else {
-            table.push_back(value);
-            return table.size();
-        }
-    }
+    int addConstant(const QString& value, QVector<QString>& table);
+
 };
 
 #endif // SCANNER_H
