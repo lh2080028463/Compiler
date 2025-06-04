@@ -1,15 +1,12 @@
 #include "createquat.h"
-#include <iostream>
-#include <list>
-#include <stack>
-#include <sstream>
-#include <string>
-#include <fstream>
-using namespace std;
+#include<QStack>
+#include<QFile>
+#include<QTextStream>
+#include<QDebug>
 
 quat qt[100];//四元式区
-string ttable[100], tnow;//t表,当前t
-stack<string>sem;//语义栈
+QString ttable[100], tnow;//t表,当前t
+QStack<QString>sem;//语义栈
 
 int createquat::q = 0;//记录四元式表的长度
 int createquat::t = 0;//作为活跃变量的t后面跟着的数字，用作记录
@@ -21,7 +18,7 @@ void createquat::clear()
     createquat::t = 0;
 }
 
-void createquat::action(string top, string temppush)
+void createquat::action(QString top, QString temppush)
 {
     if (top == "$PUSHi$")pushi(temppush);//入栈
     else if (top == "$GEQadd$")add();//+
@@ -52,10 +49,7 @@ void createquat::add()
     qt[qi].arg1 = sem.top();
     sem.pop();
 
-    tnow = "t";//生成新的t
-    stringstream temp;
-    temp << ti;
-    tnow.append(temp.str());//t后记录数字
+    tnow = QString("t%1").arg(ti);
 
     ttable[ti - 1] = tnow;
     qt[qi].result = tnow;
@@ -77,10 +71,7 @@ void createquat::sub()
     qt[qi].arg1 = sem.top();
     sem.pop();
 
-    tnow = "t";//生成新的t
-    stringstream temp;
-    temp << ti;
-    tnow.append(temp.str());//t后记录数字
+    tnow = QString("t%1").arg(ti);
 
     ttable[ti - 1] = tnow;
     qt[qi].result = tnow;
@@ -102,10 +93,7 @@ void createquat::mul()
     qt[qi].arg1 = sem.top();
     sem.pop();
 
-    tnow = "t";//生成新的t
-    stringstream temp;
-    temp << ti;
-    tnow.append(temp.str());//t后记录数字
+    tnow = QString("t%1").arg(ti);
 
     ttable[ti - 1] = tnow;
     qt[qi].result = tnow;
@@ -127,10 +115,7 @@ void createquat::div()
     qt[qi].arg1 = sem.top();
     sem.pop();
 
-    tnow = "t";//生成新的t
-    stringstream temp;
-    temp << ti;
-    tnow.append(temp.str());//t后记录数字
+    tnow = QString("t%1").arg(ti);
 
     ttable[ti - 1] = tnow;
     qt[qi].result = tnow;
@@ -141,7 +126,7 @@ void createquat::div()
     q = qi;
 }
 
-void createquat::pushi(string str)//算术表达式常数、标志符进栈，在此之前str保存当前所需压入的nowWord.s
+void createquat::pushi(QString str)//算术表达式常数、标志符进栈，在此之前str保存当前所需压入的nowWord.s
 {
     sem.push(str);
 }
@@ -262,9 +247,7 @@ void createquat::logic()//比较语句
     sem.pop();
 
     tnow = "t";//生成新的t
-    stringstream temp;
-    temp << ti;
-    tnow.append(temp.str());//t后记录数字
+    tnow = QString("t%1").arg(ti);
 
     ttable[ti - 1] = tnow;
     qt[qi].result = tnow;
@@ -321,14 +304,22 @@ void createquat::RET()
 
 void createquat::PRINT()//打印四元式表
 {
-    fstream File("TextFile\\Quaternion.txt", fstream::out);
+    QFile File("TextFile/Quaternion.txt");
+    if (!File.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        return;
+    }
+
+    QTextStream out(&File);
     int qi = 0;
-    while (qi != createquat::q)
+    while (qi != q)  // 注意：这里q仍然是成员变量，保持原逻辑
     {
-        File << "(" << qi + 1 << ")" << "(" << qt[qi].op << ", " << qt[qi].arg1 << ", " << qt[qi].arg2 << ", " << qt[qi].result << ")" << endl;
+        out << "(" << qi + 1 << ")" << "("
+            << qt[qi].op << ", "
+            << qt[qi].arg1 << ", "
+            << qt[qi].arg2 << ", "
+            << qt[qi].result << ")" << "\n";
         qi++;
     }
     File.close();
-    cout << "四元式已输出. . ." << endl;
+    qDebug() << "四元式已输出. . .";
 }
-

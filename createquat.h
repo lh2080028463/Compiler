@@ -5,25 +5,24 @@
 #ifndef CREATQUAT_H
 #define CREATQUAT_H
 
-#include<iostream>
-//#include<bits/stdc++.h>
-using namespace std;
+#include<QString>
+#include<QVector>
 
 class quat//定义四元式类
 {
 public:
-    string op;//操作符
-    string arg1;//操作数1
-    string arg2;//操作数2
-    string result;//结果
+    QString op;//操作符
+    QString arg1;//操作数1
+    QString arg2;//操作数2
+    QString result;//结果
 };
 
 class createquat//定义生成四元式类
 {
 public:
     void clear();//清空
-    void action(string top, string temppush);
-    void pushi(string str);//<因子> <标识符> $PUSHi$ | <无符号整数> $PUSHi$ | ( <表达式> ) #
+    void action(QString top, QString temppush);
+    void pushi(QString str);//<因子> <标识符> $PUSHi$ | <无符号整数> $PUSHi$ | ( <表达式> ) #
     void add();//加减乘除
     void sub();
     void mul();
