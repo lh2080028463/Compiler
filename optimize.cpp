@@ -386,36 +386,35 @@ int optimize::divide(){//划分基本块
 
 QString optimize::calcu(QString opl, QString B, QString C)   //计算两个数运算的值
 {
-    char s[LEN];
-    int v;
+    int val;
     if(opl[0]=='+'){
-        v = B.toInt() + C.toInt();
+        val = B.toInt() + C.toInt();
     }
     else if(opl[0]=='-'){
-        v = B.toInt() - C.toInt();
+        val = B.toInt() - C.toInt();
     }
     else if(opl[0]=='*'){
-        v = B.toInt() * C.toInt();
+        val = B.toInt() * C.toInt();
     }
     else if(opl[0]=='/'){
-        v = B.toInt() / C.toInt();
+        val = B.toInt() / C.toInt();
     }
     // a = opl[0];//操作符
     // switch (a)
     // {
     // case '+':
-    //     v = atof(B.c_str()) + atof(C.c_str());
+    //     val = atof(B.c_str()) + atof(C.c_str());
     //     break;
     // case '-':
-    //     v = atof(B.c_str()) - atof(C.c_str());
+    //     val = atof(B.c_str()) - atof(C.c_str());
     //     break;
     // case '*':
-    //     v = atof(B.c_str()) * atof(C.c_str());
+    //     val = atof(B.c_str()) * atof(C.c_str());
     //     break;
     // case '/':
-    //     v = atof(B.c_str()) / atof(C.c_str());
+    //     val = atof(B.c_str()) / atof(C.c_str());
     //     break;
     // }
-    QString p = QString::number(v);
+    QString p = QString::number(val);
     return p;//返回计算值
 }
