@@ -12,12 +12,18 @@ SOURCES += \
     createquat.cpp \
     main.cpp \
     mainwindow.cpp \
-    scanner.cpp
+    symboltable.cpp \
+    synana.cpp \
+    wordana.cpp \
+    optimize.cpp
 
 HEADERS += \
     createquat.h \
     mainwindow.h \
-    scanner.h
+    symboltable.h \
+    synana.h \
+    wordana.h \
+    optimize.h \
     global.h
 
 
