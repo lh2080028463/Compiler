@@ -13,7 +13,7 @@
 #include<wordana.h>
 #include<global.h>
 #include<QDebug>
-
+#include<QFile>
 
 using namespace std;
 QVector<QString> VNQList;   //非终结符列表
@@ -53,8 +53,8 @@ bool SynAna::AN(QString program)
         if (isVT(topSymbol))
         {
             if (topSymbol == nowWord.value
-                || (topSymbol == "<标识符>" && nowWord.type == 'I')
-                || (topSymbol == "<无符号整数>" && nowWord.type == 'C'))
+                || (topSymbol == "<标识符>" && nowWord.type == TokenType::I)
+                || (topSymbol == "<无符号整数>" && nowWord.type == TokenType::C))
             {
                 lastWord = nowWord;
                 //qDebug() << lastWord.value << Qt::endl;
@@ -167,42 +167,40 @@ bool SynAna::isSyTb(QString str)
 //4.每行以'#'结尾
 bool SynAna::GetLL1Table()
 {
-    QVector<QVector<QString>> grammar;   //文法右部，按顺序存储所有右部，不包含动作符号
-    QVector<QVector<int>> rightQList;   //右部列表，左部VNQList[i]的所有右部序号存于rightQList[i]
-    QVector<int> leftQList;   //左部列表，右部grammar[i]的左部序号存于leftQList[i]
+    QVector<QVector<QString>> grammar;
+    QVector<QVector<int>> rightQList;
+    QVector<int> leftQList;
     QString temp;
     QVector<QString> tempRight, tempRightAll;
-    ifstream File;
-    File.open("TextFile\\grammar.txt",ios::in);
-    while (File >> temp)
-    {
-        //qDebug()<<temp<<Qt::endl;
+
+    QFile file("TextFile/grammar.txt");
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        qDebug() << "无法打开grammar.txt";
+        return false;
+    }
+    QTextStream in(&file);
+
+    while (!in.atEnd()) {
+        in >> temp;
         VNQList.push_back(temp);
         rightQList.push_back({});
         tempRight.clear();
         tempRightAll.clear();
-        while (1)
-        {
-            File >> temp;
-            if (temp == "|" || temp == "#")
-            {
+        while (true) {
+            in >> temp;
+            if (temp == "|" || temp == "#") {
                 grammar.push_back(tempRight);
                 grammarRight.push_back(tempRightAll);
-                (*(rightQList.end() - 1)).push_back(grammar.size() - 1);
+                rightQList.last().push_back(grammar.size() - 1);
                 leftQList.push_back(VNQList.size() - 1);
-                if (temp == "|")
-                {
+                if (temp == "|") {
                     tempRight.clear();
                     tempRightAll.clear();
                     continue;
-                }
-                else break;
-            }
-            else
-            {
-                if ((temp[0] != '<' && temp[0] != '\"' && temp[0] != '$') || temp == "<" || temp == "\"")
-                {
-                    if (find(VTQList.begin(), VTQList.end(), temp) == VTQList.end())
+                } else break;
+            } else {
+                if ((temp[0] != '<' && temp[0] != '\"' && temp[0] != '$') || temp == "<" || temp == "\"") {
+                    if (!VTQList.contains(temp))
                         VTQList.push_back(temp);
                 }
                 if ((temp[0] != '\"' && temp[0] != '$') || temp == "\"")
@@ -213,348 +211,198 @@ bool SynAna::GetLL1Table()
     }
     VTQList.push_back("<标识符>");
     VTQList.push_back("<无符号整数>");
-    File.close();
+    file.close();
 
-    fstream File1("TextFile\\Symbol.txt", fstream::out);
-    //输出非终结符列表
-    qDebug() << "非终结符：" << Qt::endl;
-    for (auto i = VNQList.begin(); i != VNQList.end(); i++)
-        qDebug() << *i << ' ';
-    qDebug() << '\n';
+    QFile file1("TextFile/Symbol.txt");
+    if (file1.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        QTextStream out(&file1);
+        out << "非终结符：\n";
+        for (const auto& vn : VNQList) out << vn << ' ';
+        out << '\n';
+        out << "\n终结符：\n";
+        for (const auto& vt : VTQList) out << vt << ' ';
+        out << '\n';
+        out << "\n右部：\n";
+        int n = 1;
+        for (const auto& g : grammar) {
+            out << n++ << ": ";
+            for (const auto& s : g) out << s << ' ';
+            out << "\n";
+        }
+        file1.close();
+    }
 
-    File1 << "非终结符：" << Qt::endl;
-    for (auto i = VNQList.begin(); i != VNQList.end(); i++)
-        File1 << *i << ' ';
-    File1 << '\n';
-    //输出终结符列表
-    qDebug() << "终结符：" << Qt::endl;
-    for (auto i = VTQList.begin(); i != VTQList.end(); i++)
-        qDebug() << *i << ' ';
-    qDebug() << '\n';
+    qDebug() << "非终结符：";
+    for (const auto& vn : VNQList)
+        qDebug() << vn;
+    qDebug();
 
-    File1 << Qt::endl << "终结符：" << Qt::endl;
-    for (auto i = VTQList.begin(); i != VTQList.end(); i++)
-        File1 << *i << ' ';
-    File1 << '\n';
-    //输出所有右部
-    qDebug() << Qt::endl << "产生式右部：" << Qt::endl;
+    qDebug() << "终结符：";
+    for (const auto& vt : VTQList)
+        qDebug() << vt;
+    qDebug();
+
+    qDebug() << "产生式右部：";
     int n = 1;
-    for (auto i = grammar.begin(); i != grammar.end(); i++)
-    {
-        qDebug() << n++ << ": ";
-        for (auto j = i->begin(); j != i->end(); j++)
-            qDebug() << *j << ' ';
-        qDebug() << "\n";
+    for (const auto& g : grammar) {
+        qDebug().noquote() << QString("%1: %2").arg(n++).arg(g.join(' '));
     }
+    qDebug();
 
+    // 求First集
+    QMap<QString, QSet<QString>> FIRST_VNVT;
+    QVector<QSet<QString>> FIRST(grammar.size());
 
-    File1 << Qt::endl << "右部：" << Qt::endl;
-    n = 1;
-    for (auto i = grammar.begin(); i != grammar.end(); i++)
-    {
-        File1 << n++ << ": ";
-        for (auto j = i->begin(); j != i->end(); j++)
-            File1 << *j << ' ';
-        File1 << "\n";
-    }
-    File1.close();
-    //w->outInfor("终结符、非终结符已提取. . .");
-    //qDebug() << "终结符、非终结符已提取。" << Qt::endl;
+    // 终结符First集为本身
+    for (const auto& vt : VTQList)
+        FIRST_VNVT[vt] = {vt};
 
-    //求First集
-    QMap<QString, QVector<QString>> FIRST_VNVT;
-    QVector<QVector<QString>> FIRST(grammar.size());
-    //终结符First集为本身
-    for (auto i = VTQList.begin(); i != VTQList.end(); i++)
-        FIRST_VNVT[*i] = { *i };
-    //非终结符First集为<空>
-    for (auto i = VNQList.begin(); i != VNQList.end(); i++)
-        FIRST_VNVT[*i] = { };
+    // 非终结符First集为空
+    for (const auto& vn : VNQList)
+        FIRST_VNVT[vn] = {};
+
     bool change = true;
-    while (change == true) //当First集还在改变
-    {
+    while (change) {
         change = false;
-        int m = 0;
-        //对每一个产生式A->b
-        for (auto j = grammar.begin(); j != grammar.end(); j++, m++)
-        {
-            //b=b1b2b3..., bi是VN | VT, tempFIRST_VNVT <- First(b1) - {空}
-            QVector<QString> tempFIRST_VNVT = FIRST_VNVT[*(j->begin())];
-            auto nullItera = find(tempFIRST_VNVT.begin(), tempFIRST_VNVT.end(), "<空>");
-            if (nullItera != tempFIRST_VNVT.end())tempFIRST_VNVT.erase(nullItera);
+        for (int m = 0; m < grammar.size(); ++m) {
+            const auto& production = grammar[m];
+            QSet<QString> tempFIRST_VNVT = FIRST_VNVT[production.first()];
+            tempFIRST_VNVT.remove("<空>");
+
             int i = 1;
-            //当First(b0...bi-1)包含空，即b0到bi-1都可为空，tempFIRST_VNVT += First(bi)
-            while (find(FIRST_VNVT[(*j)[i - 1]].begin(), FIRST_VNVT[(*j)[i - 1]].end(), "<空>")
-                       != FIRST_VNVT[(*j)[i - 1]].end()
-                   && i <= (int)j->size() - 1)
-            {
-                for (auto k = FIRST_VNVT[(*j)[i]].begin(); k != FIRST_VNVT[(*j)[i]].end(); k++)
-                    if (*k != "<空>") tempFIRST_VNVT.push_back(*k);
-                i++;
+            while (i < production.size() && FIRST_VNVT[production[i-1]].contains("<空>")) {
+                tempFIRST_VNVT.unite(FIRST_VNVT[production[i]]);
+                tempFIRST_VNVT.remove("<空>");
+                ++i;
             }
-            //如果右部可推出空，tempFIRST_VNVT += <空>
-            if (i == (int)j->size() - 1
-                && find(FIRST_VNVT[(*j)[i - 1]].begin(), FIRST_VNVT[(*j)[i - 1]].end(), "<空>")
-                       != FIRST_VNVT[(*j)[i - 1]].end())
-                tempFIRST_VNVT.push_back("<空>");
-            //如果右部=<空>，tempFIRST_VNVT <- <空>
-            if (j->size() == 1 && *(j->begin()) == "<空>")
-                tempFIRST_VNVT.push_back("<空>");
-            //更新左部的First集
-            for (auto k = tempFIRST_VNVT.begin(); k != tempFIRST_VNVT.end(); k++)
-            {
-                QString tempVN = VNQList[leftQList[m]];
-                if (find(FIRST_VNVT[tempVN].begin(), FIRST_VNVT[tempVN].end(), *k) == FIRST_VNVT[tempVN].end())
-                {
-                    FIRST_VNVT[tempVN].push_back(*k);
-                    change = true;
-                }
+
+            if (i == production.size() && FIRST_VNVT[production.last()].contains("<空>"))
+                tempFIRST_VNVT.insert("<空>");
+
+            if (production.size() == 1 && production[0] == "<空>")
+                tempFIRST_VNVT.insert("<空>");
+
+            QString leftVN = VNQList[leftQList[m]];
+            if (FIRST_VNVT[leftVN].unite(tempFIRST_VNVT).size() > FIRST_VNVT[leftVN].size()) {
+                change = true;
             }
-            //更新右部的First集
-            for (auto k = tempFIRST_VNVT.begin(); k != tempFIRST_VNVT.end(); k++)
-            {
-                if (find(FIRST[m].begin(), FIRST[m].end(), *k) == FIRST[m].end())
-                {
-                    FIRST[m].push_back(*k);
-                    change = true;
-                }
+
+            if (FIRST[m].unite(tempFIRST_VNVT).size() > FIRST[m].size()) {
+                change = true;
             }
         }
     }
-    //输出First集
-    qDebug() << "First集：" << Qt::endl;
-    int m = 1;
-    for (auto i = FIRST.begin(); i != FIRST.end(); i++)
-    {
-        qDebug() << m++ << ": ";
-        for (auto j = i->begin(); j != i->end(); j++)
-            qDebug() << *j << " ";
-        qDebug() << "\n";
+
+    qDebug() << "First集：";
+    for (int m = 0; m < FIRST.size(); ++m) {
+        qDebug().noquote() << QString("%1: %2").arg(m+1).arg(QStringList(FIRST[m].toList()).join(' '));
     }
+    qDebug();
 
+    // 求Follow集
+    QMap<QString, QSet<QString>> FOLLOW;
+    for (const auto& vn : VNQList)
+        FOLLOW[vn] = {};
+    FOLLOW[VNQList.first()].insert("#");
 
-    //输出First集
-    //fstream File2("TextFile\\First.txt", fstream::out);
-    //File2 << "First集：" << Qt::endl;
-    //int m = 1;
-    //for (auto i = FIRST.begin(); i != FIRST.end(); i++)
-    //{
-    //    File2 << m++ << ": ";
-    //    for (auto j = i->begin(); j != i->end(); j++)
-    //        File2 << *j << " ";
-    //    File2 << "\n";
-    //}
-    //File2.close();
-    //w->outInfor("First集已求取. . .");
-    //qDebug() << "First集已求取。" << Qt::endl;
-
-    //求Follow集
-    QMap<QString, QVector<QString>> FOLLOW;
-    //所有非终结符Follow集置<空>
-    for (auto i = VNQList.begin(); i != VNQList.end(); i++)
-        FOLLOW[*i] = { };
-    //开始符号Follow集为"#"
-    FOLLOW[*(VNQList.begin())].push_back("#");
-    //当Follow集还在改变
     change = true;
-    while (change == true)
-    {
+    while (change) {
         change = false;
-        int m = 0;
-        //对每一个产生式A->b1b2...bi
-        for (auto j = grammar.begin(); j != grammar.end(); j++, m++)
-        {
-            //Trailer <- Follow(A)
-            QVector<QString> Trailer = FOLLOW[VNQList[leftQList[m]]];
-            //从后往前遍历产生式右部
-            for (auto i = j->rbegin(); i != j->rend(); i++)
-            {
-                //如果bi是非终结符，将其后跟着的单词first加到follow中
-                if (find(VNQList.begin(), VNQList.end(), *i) != VNQList.end())
-                {
-                    //Follow(bi) += Trailer,存入无重复元素
-                    for (auto k = Trailer.begin(); k != Trailer.end(); k++)
-                    {
-                        if (find(FOLLOW[*i].begin(), FOLLOW[*i].end(), *k) == FOLLOW[*i].end())
-                        {
-                            FOLLOW[*i].push_back(*k);//将当前左部的加到这个元素中
-                            change = true;
-                        }
+        for (int m = 0; m < grammar.size(); ++m) {
+            const auto& production = grammar[m];
+            QSet<QString> Trailer = FOLLOW[VNQList[leftQList[m]]];
+
+            for (auto it = production.rbegin(); it != production.rend(); ++it) {
+                if (VNQList.contains(*it)) {
+                    int oldSize = FOLLOW[*it].size();
+                    FOLLOW[*it].unite(Trailer);
+                    if (FOLLOW[*it].size() > oldSize) change = true;
+
+                    if (FIRST_VNVT[*it].contains("<空>")) {
+                        Trailer.unite(FIRST_VNVT[*it]);
+                        Trailer.remove("<空>");
+                    } else {
+                        Trailer = FIRST_VNVT[*it];
                     }
-                    //如果First(bi)包含空，Trailer += First(bi)-"<空>"
-                    if (find(FIRST_VNVT[*i].begin(), FIRST_VNVT[*i].end(), "<空>") != FIRST_VNVT[*i].end())
-                    {
-                        for (auto k = FIRST_VNVT[*i].begin(); k != FIRST_VNVT[*i].end(); k++)
-                        {
-                            if (*k != "<空>")
-                            {
-                                if (find(Trailer.begin(), Trailer.end(), *k) == Trailer.end())
-                                {
-                                    Trailer.push_back(*k);
-                                }
-                            }
-                        }
-                    }
-                    //否则Trailer = First(bi)
-                    else
-                    {
-                        Trailer = FIRST_VNVT[*i];
-                    }
-                }
-                //如果bi是终结符，Trailer = First(bi)
-                else
-                {
-                    Trailer = FIRST_VNVT[*i];
+                } else {
+                    Trailer = FIRST_VNVT[*it];
                 }
             }
         }
     }
-    qDebug() << "Follow集：" << Qt::endl;
-    for (auto i = VNQList.begin(); i != VNQList.end(); i++)
-    {
-        qDebug() << *i << ": ";
-        for (auto j = FOLLOW[*i].begin(); j != FOLLOW[*i].end(); j++)
-            qDebug() << *j << ' ';
-        qDebug() << '\n';
+
+    qDebug() << "Follow集：";
+    for (const auto& vn : VNQList) {
+        qDebug().noquote() << QString("%1: %2").arg(vn).arg(QStringList(FOLLOW[vn].toList()).join(' '));
     }
+    qDebug();
 
-
-    //输出Follow集
-    //fstream File3("TextFile\\Follow.txt", fstream::out);
-    //File3 << "Follow集：" << Qt::endl;
-    //for (auto i = VNQList.begin(); i != VNQList.end(); i++)
-    //{
-    //    File3 << *i << ": ";
-    //    for (auto j = FOLLOW[*i].begin(); j != FOLLOW[*i].end(); j++)
-    //        File3 << *j << ' ';
-    //    File3 << '\n';
-    //}
-    //File3.close();
-    //w->outInfor("Follow集已求取. . .");
-    //qDebug() << "Follow集已求取。" << Qt::endl;
-
-    //求Select集
-    QVector<QVector<QString>> SELECT(grammar.size());
-    //对每个A->b
-    for (int i = 0; i < (int)grammar.size(); i++)
-    {
-        //如果First(b)不包含空，即右部不能推出空，select集等于右部first集
-        if (find(FIRST[i].begin(), FIRST[i].end(), "<空>") == FIRST[i].end())
+    // 求Select集
+    QVector<QSet<QString>> SELECT(grammar.size());
+    for (int i = 0; i < grammar.size(); ++i) {
+        if (!FIRST[i].contains("<空>")) {
             SELECT[i] = FIRST[i];
-        //否则，select集等于右部first集并上左部follow集
-        else
-        {
+        } else {
             SELECT[i] = FOLLOW[VNQList[leftQList[i]]];
-            for (auto j = FIRST[i].begin(); j != FIRST[i].end(); j++)
-            {
-                if (*j != "<空>")
-                    if (find(SELECT[i].begin(), SELECT[i].end(), *j) == SELECT[i].end())
-                        SELECT[i].push_back(*j);
+            SELECT[i].unite(FIRST[i]);
+            SELECT[i].remove("<空>");
+        }
+    }
+
+    qDebug() << "Select集：";
+    for (int i = 0; i < SELECT.size(); ++i) {
+        qDebug().noquote() << QString("%1: %2").arg(i+1).arg(QStringList(SELECT[i].toList()).join(' '));
+    }
+    qDebug();
+
+    // 检查是否为LL(1)文法
+    for (int i = 0; i < VNQList.size(); ++i) {
+        QSet<QString> tempSelect;
+        for (int j : rightQList[i]) {
+            if (!tempSelect.intersect(SELECT[j]).isEmpty()) {
+                qDebug() << "文法非LL(1)文法！请检查！";
+                qDebug() << "提示信息：左部" << VNQList[i];
+                return false;
+            }
+            tempSelect.unite(SELECT[j]);
+        }
+    }
+    qDebug() << "文法满足LL(1)文法要求。";
+
+    // 构建LL1分析表
+    for (const auto& vn : VNQList) {
+        for (const auto& vt : VTQList)
+            LL1Table[vn][vt] = -1;
+        LL1Table[vn]["#"] = -1;
+    }
+
+    for (int i = 0; i < VNQList.size(); ++i) {
+        for (int x : rightQList[i]) {
+            for (const auto& k : SELECT[x]) {
+                if (VTQList.contains(k) || k == "#")
+                    LL1Table[VNQList[i]][k] = x;
             }
         }
     }
 
-    //打印select集
-
-
-    //fstream File4("TextFile\\Follow.txt", fstream::out);
-    //File4 << "Select集：" << Qt::endl;
-    //int v = 1;
-    //for (auto i = SELECT.begin(); i != SELECT.end(); i++)
-    //{
-    //    File4 << v++ << ": ";
-    //    for (auto j = i->begin(); j != i->end(); j++)
-    //        File4 << *j << " ";
-    //    File4 << "\n";
-    //}
-    //File4.close();
-
-
-    qDebug() << Qt::endl << "select集如下" << Qt::endl;
-    int v = 1;
-    for (auto i = SELECT.begin(); i != SELECT.end(); i++)
-    {
-        qDebug() << v++ << ": ";
-        for (auto j = i->begin(); j != i->end(); j++)
-            qDebug() << *j << " ";
-        qDebug() << "\n";
-    }
-    //w->outInfor("Select集已求取. . .");
-    //qDebug() << "Select集已求取。" << Qt::endl;
-
-    //求是不是LL1文法
-    for (int i = 0; i < (int)VNQList.size(); i++)
-    {
-        QVector<QString> tempSelect;
-        tempSelect.clear();
-        for (auto j = rightQList[i].begin(); j != rightQList[i].end(); j++)
-        {
-            for (auto k = SELECT[*j].begin(); k != SELECT[*j].end(); k++)
-            {
-                if (find(tempSelect.begin(), tempSelect.end(), *k) == tempSelect.end())
-                    tempSelect.push_back(*k);
-                else
-                {
-                    qDebug() << "文法非LL(1)文法！请检查！\n" << "提示信息：左部" << VNQList[i] << Qt::endl;
-                    return false;
-                }
-            }
+    // 输出LL(1)分析表到文件
+    QFile file5("TextFile/LL1Table.txt");
+    if (file5.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        QTextStream out(&file5);
+        out << "LL(1)分析表\t";
+        for (const auto& vt : VTQList) out << vt << "\t\t";
+        out << "#\t\n";
+        for (const auto& vn : VNQList) {
+            out << vn;
+            for (int k = vn.size(); k < 15; k++) out << ' ';
+            out << '\t';
+            for (const auto& vt : VTQList)
+                out << LL1Table[vn][vt] << "\t\t";
+            out << LL1Table[vn]["#"] << '\t';
+            out << '\n';
         }
+        file5.close();
     }
-    qDebug() << "文法满足LL(1)文法要求。" << Qt::endl;
-
-    //求LL1分析表
-    for (int i = 0; i < (int)VNQList.size(); i++)
-    {
-        for (auto j = VTQList.begin(); j != VTQList.end(); j++)
-            LL1Table[VNQList[i]][*j] = -1;
-        LL1Table[VNQList[i]]["#"] = -1;
-        for (auto x = rightQList[i].begin(); x != rightQList[i].end(); x++)
-        {
-            for (auto k = SELECT[*x].begin(); k != SELECT[*x].end(); k++)
-            {
-                if (find(VTQList.begin(), VTQList.end(), *k) != VTQList.end()
-                    || *k == "#")
-                    LL1Table[VNQList[i]][*k] = *x;
-            }
-        }
-    }
-    //打印LL(1)分析表
-    //qDebug() << "LL(1)分析表如下" << Qt::endl;
-    //for (auto i = VTQList.begin(); i != VTQList.end(); i++)
-    //    qDebug() << *i << '\t' << '\t';
-    //qDebug() << "#" << '\t';
-    //qDebug() << '\n';
-    //for (auto i = VNQList.begin(); i != VNQList.end(); i++)
-    //{
-    //    qDebug() << *i;
-    //    for (int k = i->size(); k < 15; k++) qDebug() << ' ';
-    //    qDebug() << '\t';
-    //    for (auto j = VTQList.begin(); j != VTQList.end(); j++)
-    //        qDebug() << LL1Table[*i][*j] << '\t' << '\t';
-    //    qDebug() << LL1Table[*i]["#"] << '\t';
-    //    qDebug() << '\n';
-    //}
-
-
-    fstream File5("TextFile\\LL1Table.txt", fstream::out);
-    File5 << "LL(1)分析表" << '\t';
-    for (auto i = VTQList.begin(); i != VTQList.end(); i++)
-        File5 << *i << '\t' << '\t';
-    File5 << "#" << '\t';
-    File5 << '\n';
-    for (auto i = VNQList.begin(); i != VNQList.end(); i++)
-    {
-        File5 << *i;
-        for (int k = i->size(); k < 15; k++) File5 << ' ';
-        File5 << '\t';
-        for (auto j = VTQList.begin(); j != VTQList.end(); j++)
-            File5 << LL1Table[*i][*j] << '\t' << '\t';
-        File5 << LL1Table[*i]["#"] << '\t';
-        File5 << '\n';
-    }
-    File5.close();
-    //qDebug() << "LL(1)分析表已生成。" << Qt::endl;
 
     return true;
 }

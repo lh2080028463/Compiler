@@ -19,8 +19,8 @@ public:
     int isP(QString s, int i, Token& tk);
     int isS(QString s, int i, Token& tk);
     int jmpBlank(QString s, int i);
-    float expOp(int start, int end, int loc, char w, QString s, int n_ope);	//指数处理
-    int val(char ch);
+    float expOp(int start, int end, int loc, QChar w, QString s, int n_ope);	//指数处理
+    int val(QChar ch);
 };
 
 #endif // WORDANA_H

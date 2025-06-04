@@ -15,10 +15,11 @@ enum class TokenType {
     C1,  // 常整数
     C2,  // 常实数
     CT,  // 字符常量
-    ST,  // 字符串常量
+    ST,
     O,
     I,// 标识符
     C,
+    S,// 字符串常量
     UNKNOWN
 };
 
@@ -32,15 +33,14 @@ struct Token {
 
 // 关键字集合
 const QVector<QString> K = {
-    "program", "var", "integer", "real",
-    "char", "begin", "end"
+    "int","void","while","if","else","return","float","string",
+    "char","break","const","do","struct","case","for","default"
 };
 
 // 界符集合
 const QVector<QString> P = {
-    ",", ":", ";", ":=",
-    "*", "/", "+", "-",
-    ".", "(", ")"
+    "-","/","(",")","==","<=","<","+","*",">","=",",",";","++",
+    "{","}","\'","\"",">=","--","&&","||","<<",">>","[","]","!","!="
 };
 
 QVector <QString> I;				//标识符表
@@ -48,5 +48,6 @@ QVector <float> C;                  //常数表
 QVector <QString> S;				//字符或字符串常量表
 QVector <QString> Tokens;			//Token序列
 
+QVector <QChar> Pdouble = { '=','<','+','>','-','&','|','!' };
 
 #endif // GLOBAL_H

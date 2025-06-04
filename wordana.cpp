@@ -173,7 +173,7 @@ int WordAna::isI(QString s, int i, Token& tk)
 
     const int start = i;
 
-    // 使用QChar方法代替直接字符比较
+    // 使用QQChar方法代替直接字符比较
     while (i < s.length()) {
         const QChar c = s.at(i);
         if (!(c.isLetter() || c == '_' || (i > start && c.isDigit()))) {
@@ -196,7 +196,7 @@ int WordAna::isI(QString s, int i, Token& tk)
         tk.value = ident;
 
         // 使用QString的arg()方法格式化字符串
-        Token.push_back(QString("(K %1)").arg(keywordIndex));
+        Tokens.push_back(QString("(K %1)").arg(keywordIndex));
     }
     // 处理标识符
     else {
@@ -206,11 +206,11 @@ int WordAna::isI(QString s, int i, Token& tk)
             I.push_back(ident);
         }
 
-        tk.type = 'I';
+        tk.type = TokenType::I;
         tk.index = existT<QString>(ident, I);
         tk.value = ident;
 
-        Token.push_back(QString("(I %1)").arg(tk.index));
+        Tokens.push_back(QString("(I %1)").arg(tk.index));
     }
 
     return i - start;
@@ -220,7 +220,7 @@ int WordAna::isC(QString s, int i, Token& tk)
 {
     int start = i;
     int flag = 0;
-    char ope;
+    QChar ope;
     int location;
     int n_ope = 1;
     int sum = 0;
@@ -270,15 +270,15 @@ int WordAna::isC(QString s, int i, Token& tk)
             i++;
         }
     }
-    QString temp = s.substr(start, i - start);
+    QString temp = s.mid(start, i - start);
     if (flag == 0)
     {
-        float check = (float)atoi(temp.c_str());
-        if (!existT<float>(check, C))//不存在则填表
+        float check = temp.toFloat();
+        if (!existT<float>(check, C)) // 不存在则填表
             C.push_back(check);
-        QString key = "(C " + to_QString(existT<float>(check, C)) + ')';
-        Token.push_back(key);
-        tk.type = 'C';
+        QString key = QStringLiteral("(C %1)").arg(existT<float>(check, C));
+        Tokens.push_back(key);
+        tk.type = TokenType::C;
         tk.index = existT<float>(check, C);
         tk.value = temp;
     }
@@ -286,91 +286,95 @@ int WordAna::isC(QString s, int i, Token& tk)
     {
         float check = 0;
         if (flag == 1)
-            check = (float)atof(temp.c_str());
+            check = temp.toFloat();
         if (flag == 2)
-            check = (float)expOp(start, i, location, ope, s, n_ope);
-        if (!existT<float>(check, C))//不存在则填表
+            check = static_cast<float>(expOp(start, i, location, ope, s, n_ope));
+        if (!existT<float>(check, C)) // 不存在则填表
             C.push_back(check);
-        QString key = "(C " + to_QString(existT<float>(check, C)) + ')';
-        Token.push_back(key);
-        tk.type = 'C';
+        QString key = QStringLiteral("(C %1)").arg(existT<float>(check, C));
+        Tokens.push_back(key);
+        tk.type = TokenType::C;
         tk.index = existT<float>(check, C);
         tk.value = temp;
     }
     else if (flag == 3)
     {
-        if (!existT<float>(sum, C))//不存在则填表
+        if (!existT<float>(sum, C)) // 不存在则填表
             C.push_back(sum);
-        QString key = "(C " + to_QString(existT<float>(sum, C)) + ')';
-        Token.push_back(key);
-        tk.type = 'C';
+        QString key = QStringLiteral("(C %1)").arg(existT<float>(sum, C));
+        Tokens.push_back(key);
+        tk.type = TokenType::C;
         tk.index = existT<float>(sum, C);
-        tk.value = to_QString(sum);
+        tk.value = QString::number(sum);
     }
     return i - start;
 }
-float WordAna::expOp(int start, int end, int loc, char w, QString s, int n_ope)
+float WordAna::expOp(int start, int end, int loc, QChar w, QString s, int n_ope)
 {
-    int front = 0; //记录整数部分长度
-    int behind = 0;//记录小数部分长度
-    int baseindex = 0;//基数
+    int front = 0; // 记录整数部分长度
+    int behind = 0; // 记录小数部分长度
+    int baseindex = 0; // 基数
+
     for (int j = start; ; j++)
     {
         if (s[j] == '.')
         {
             front = j - start;
             behind = loc - j - 1;
-            QString temp = s.substr(start, loc - start);
-            baseindex = (int)(atof(temp.c_str()) * pow(10, behind));
+            QString temp = s.mid(start, loc - start);
+            baseindex = static_cast<int>(temp.toDouble() * qPow(10, behind));
             break;
         }
         if (s[j] == 'e')
         {
-            QString temp = s.substr(start, loc - start);
-            baseindex = (int)(atof(temp.c_str()) * pow(10, behind));
+            QString temp = s.mid(start, loc - start);
+            baseindex = static_cast<int>(temp.toDouble() * qPow(10, behind));
             break;
         }
     }
-    QString temp = s.substr(loc + 1 + n_ope, end - loc - 1 - n_ope);
+
+    QString temp = s.mid(loc + 1 + n_ope, end - loc - 1 - n_ope);
     int times = 0;
+
     if (w == '+')
-        times = atoi(temp.c_str()) - behind;
+        times = temp.toInt() - behind;
     if (w == '-')
-        times = atoi(temp.c_str()) * (-1) - behind;
-    return (float)(baseindex * pow(10, times));
+        times = temp.toInt() * (-1) - behind;
+
+    return static_cast<float>(baseindex * qPow(10, times));
 }
 
 int WordAna::isP(QString s, int i, Token& tk)
 {
     int re = 0;
-    if (!existT<char>(s[i], Pdouble))
+    if (!existT<QChar>(s[i], Pdouble))
     {
-        QString str = s.substr(i, 1);
-        QString key = "(P " + to_QString(existT<QString>(str, P)) + ')';
-        Token.push_back(key);
-        tk.type = 'P';
+        QString str = s.mid(i, 1);
+        QString key = QStringLiteral("(P %1)").arg(existT<QString>(str, P));
+        Tokens.push_back(key);
+        tk.type = TokenType::P;
         tk.index = existT<QString>(str, P);
         tk.value = str;
         re = 1;
     }
     else
     {
-        QString st = s.substr(i, 2);
+        QString st = s.mid(i, 2);
         if (!existT<QString>(st, P))
         {
-            QString str = s.substr(i, 1);
-            QString key = "(P " + to_QString(existT<QString>(str, P)) + ')';
-            Token.push_back(key);
-            tk.type = 'P';
+            QString str = s.mid(i, 1);
+            QString key = QStringLiteral("(P %1)").arg(existT<QString>(str, P));
+            Tokens.push_back(key);
+            tk.type = TokenType::P;
             tk.index = existT<QString>(str, P);
             tk.value = str;
             re = 1;
         }
         else
         {
-            QString key = "(P " + to_QString(existT<QString>(st, P)) + ')';
-            Token.push_back(key);
-            tk.type = 'P';
+            QString key = QStringLiteral("(P %1)").arg(existT<QString>(st, P));
+            Tokens.push_back(key);
+            tk.type = TokenType::P;
             tk.index = existT<QString>(st, P);
             tk.value = st;
             re = 2;
@@ -392,44 +396,62 @@ void WordAna::print(QVector<T> v)
     }
 }
 
-int WordAna::val(char ch)
+int WordAna::val(QChar ch)
 {
-    int value = 0;
-    if (ch >= '0' && ch <= '9')
-        value = ch - '0';
-    else if (ch >= 'a' && ch <= 'f')
-        value = ch - 'a' + 10;
-    else if (ch >= 'A' && ch <= 'F')
-        value = ch - 'A' + 10;
-    return value;
+    // 使用 Unicode 感知的字符检查方法
+    if (ch.isDigit()) {
+        return ch.digitValue(); // 直接使用 Qt 提供的数字转换
+    }
+
+    // 处理十六进制字母 (不区分大小写)
+    if (ch >= u'a' && ch <= u'f') {
+        return 10 + (ch.toLower().unicode() - u'a');
+    }
+    if (ch >= u'A' && ch <= u'F') {
+        return 10 + (ch.toUpper().unicode() - u'A');
+    }
+
+    return 0;
 }
 
 int WordAna::isS(QString s, int i, Token& tk)
 {
     int start = i;
-    if (s[i] == '\'')//字符常量
+    if (s[i] == u'\'') // 字符常量 (使用 Unicode 字符字面量)
     {
         i++;
         i++;
-        if (s[i] != '\'')
+        if (s[i] != u'\'') // 检查结束引号
         {
-            qDebug() << "错误";
+            qDebug() << "错误：未闭合的字符常量";
             return -1;
         }
         i++;
     }
-    else if (s[i] == '\"')//字符串常量
+    else if (s[i] == u'\"') // 字符串常量
     {
         i++;
-        while (s[i] != '\"')
+        while (i < s.length() && s[i] != u'\"') // 添加边界检查
             i++;
+
+        if (i >= s.length()) // 检查是否找到闭合引号
+        {
+            qDebug() << "错误：未闭合的字符串常量";
+            return -1;
+        }
     }
-    QString temp = s.substr(start + 1, i - start - 1);
-    if (!existT<QString>(temp, S))//不存在则填表
+
+    // 提取内容并处理
+    QString temp = s.mid(start + 1, i - start - 1); // 使用 mid() 替代 substr()
+
+    if (!existT<QString>(temp, S)) // 不存在则填表
         S.push_back(temp);
-    QString key = "(S " + to_QString(existT<QString>(temp, S)) + ')';
-    Token.push_back(key);
-    tk.type = 'S';
+
+    // 使用 QStringLiteral 和 arg() 进行高效格式化
+    QString key = QStringLiteral("(S %1)").arg(existT<QString>(temp, S));
+    Tokens.push_back(key);
+
+    tk.type = TokenType::S;
     tk.index = existT<QString>(temp, S);
     tk.value = temp;
 }

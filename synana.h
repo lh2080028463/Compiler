@@ -2,7 +2,6 @@
 #define SYNANA_H
 
 #include<global.h>
-#include<scanner.h>
 
 class SynAna                                   //递归子程序分析
 {
