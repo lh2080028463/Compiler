@@ -12,15 +12,14 @@ SOURCES += \
     createquat.cpp \
     main.cpp \
     mainwindow.cpp \
-    scanner.cpp \
-    synana.cpp
+    scanner.cpp
 
 HEADERS += \
     createquat.h \
     mainwindow.h \
     scanner.h
-    global.h \
-    synana.h
+    global.h
+
 
 
 FORMS += \
