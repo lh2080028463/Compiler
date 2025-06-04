@@ -9,18 +9,25 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    createquat.cpp \
     main.cpp \
     mainwindow.cpp \
     symboltable.cpp \
     synana.cpp \
     wordana.cpp
+    optimize.cpp \
+    scanner.cpp
 
 HEADERS += \
-    global.h \
+    createquat.h \
     mainwindow.h \
     symboltable.h \
     synana.h \
     wordana.h
+    optimize.h \
+    scanner.h\
+    global.h
+
 
 FORMS += \
     mainwindow.ui
