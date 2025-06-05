@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MainWindow</class>
- <widget class="QMainWindow" name="MainWindow">
+ <class>Quat_result</class>
+ <widget class="QMainWindow" name="Quat_result">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>813</width>
+    <width>800</width>
     <height>600</height>
    </rect>
   </property>
@@ -14,34 +14,24 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QTextBrowser" name="textBrowser">
+   <widget class="QLabel" name="label_3">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>70</y>
-      <width>241</width>
-      <height>371</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>50</y>
-      <width>71</width>
+      <x>570</x>
+      <y>60</y>
+      <width>101</width>
       <height>16</height>
      </rect>
     </property>
     <property name="text">
-     <string>优化前四元式</string>
+     <string>目标代码</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_2">
     <property name="geometry">
      <rect>
-      <x>290</x>
-      <y>50</y>
+      <x>300</x>
+      <y>60</y>
       <width>101</width>
       <height>16</height>
      </rect>
@@ -53,8 +43,8 @@
    <widget class="QTextBrowser" name="textBrowser_2">
     <property name="geometry">
      <rect>
-      <x>290</x>
-      <y>70</y>
+      <x>300</x>
+      <y>80</y>
       <width>241</width>
       <height>371</height>
      </rect>
@@ -63,24 +53,34 @@
    <widget class="QTextBrowser" name="textBrowser_3">
     <property name="geometry">
      <rect>
-      <x>560</x>
-      <y>70</y>
+      <x>570</x>
+      <y>80</y>
       <width>241</width>
       <height>371</height>
      </rect>
     </property>
    </widget>
-   <widget class="QLabel" name="label_3">
+   <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>560</x>
-      <y>50</y>
-      <width>101</width>
+      <x>30</x>
+      <y>60</y>
+      <width>71</width>
       <height>16</height>
      </rect>
     </property>
     <property name="text">
-     <string>目标代码</string>
+     <string>优化前四元式</string>
+    </property>
+   </widget>
+   <widget class="QTextBrowser" name="textBrowser">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>80</y>
+      <width>241</width>
+      <height>371</height>
+     </rect>
     </property>
    </widget>
   </widget>
@@ -89,7 +89,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>813</width>
+     <width>800</width>
      <height>18</height>
     </rect>
    </property>

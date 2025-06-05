@@ -11,7 +11,7 @@ SOURCES += \
     createquat.cpp \
     main.cpp \
     mainwindow.cpp \
-    quatshow.cpp \
+    quat_result.cpp \
     symboltable.cpp \
     symtable.cpp \
     synana.cpp \
@@ -22,7 +22,7 @@ SOURCES += \
 HEADERS += \
     createquat.h \
     mainwindow.h \
-    quatshow.h \
+    quat_result.h \
     symboltable.h \
     symtable.h \
     synana.h \
@@ -33,7 +33,7 @@ HEADERS += \
 # UI文件
 FORMS += \
     mainwindow.ui \
-    quatshow.ui \
+    quat_result.ui \
     symtable.ui
 
 # 资源文件（确保路径正确）
