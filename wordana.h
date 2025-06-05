@@ -1,12 +1,14 @@
 #ifndef WORDANA_H
 #define WORDANA_H
 
-#include<global.h>
+#include<QString>
+
+#include"global.h"
 
 class WordAna
 {
 public:
-    WordAna();
+    WordAna(){};
     static int count;
     bool clear();
     bool scan(QString s, Token& tk);		//词法分析Token序列

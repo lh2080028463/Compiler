@@ -1,7 +1,12 @@
 #ifndef SYNANA_H
 #define SYNANA_H
 
-#include<global.h>
+#include "symboltable.h"
+#include "createquat.h"
+#include"wordana.h"
+
+
+
 
 class SynAna                                   //递归子程序分析
 {
