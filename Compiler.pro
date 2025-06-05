@@ -12,6 +12,7 @@ SOURCES += \
     createquat.cpp \
     main.cpp \
     mainwindow.cpp \
+    quatshow.cpp \
     symboltable.cpp \
     synana.cpp \
     wordana.cpp \
@@ -20,6 +21,7 @@ SOURCES += \
 HEADERS += \
     createquat.h \
     mainwindow.h \
+    quatshow.h \
     symboltable.h \
     synana.h \
     wordana.h \
@@ -30,6 +32,7 @@ HEADERS += \
 
 FORMS += \
     mainwindow.ui \
+    quatshow.ui \
     tables.ui
 
 # Default rules for deployment.
