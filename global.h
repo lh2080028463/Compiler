@@ -18,7 +18,7 @@ enum class TokenType {
     ST,
     O,
     I,// 标识符
-    C,
+    C,//无符号整数
     S,// 字符串常量
     UNKNOWN
 };
