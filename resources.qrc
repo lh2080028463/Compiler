@@ -1,0 +1,6 @@
+<RCC>
+  <qresource prefix="/">
+    <file alias="images/piggy.gif">images/piggy.gif</file>
+    <file alias="fonts/Roboto-Bold.ttf">fonts/Roboto-Bold.ttf</file>
+  </qresource>
+</RCC>
