@@ -1,17 +1,5 @@
 #include "synana.h"
-#include <iostream>
-#include <fstream>
-#include <QList>
-#include <QMap>
-#include <QString>
-#include <QVector>
-#include <algorithm>
-#include "symboltable.h"
-#include "createquat.h"
-#include<QList>
-#include<QMap>
-#include<wordana.h>
-#include<global.h>
+
 #include<QDebug>
 #include<QFile>
 
@@ -295,7 +283,7 @@ bool SynAna::GetLL1Table()
 
     qDebug() << "First集：";
     for (int m = 0; m < FIRST.size(); ++m) {
-        qDebug().noquote() << QString("%1: %2").arg(m+1).arg(QStringList(FIRST[m].toList()).join(' '));
+        qDebug().noquote() << QString("%1: %2").arg(m+1).arg(QStringList(FIRST[m].values()).join(' '));
     }
     qDebug();
 
@@ -333,7 +321,7 @@ bool SynAna::GetLL1Table()
 
     qDebug() << "Follow集：";
     for (const auto& vn : VNQList) {
-        qDebug().noquote() << QString("%1: %2").arg(vn).arg(QStringList(FOLLOW[vn].toList()).join(' '));
+        qDebug().noquote() << QString("%1: %2").arg(vn).arg(QStringList(FOLLOW[vn].values()).join(' '));
     }
     qDebug();
 
@@ -351,7 +339,7 @@ bool SynAna::GetLL1Table()
 
     qDebug() << "Select集：";
     for (int i = 0; i < SELECT.size(); ++i) {
-        qDebug().noquote() << QString("%1: %2").arg(i+1).arg(QStringList(SELECT[i].toList()).join(' '));
+        qDebug().noquote() << QString("%1: %2").arg(i+1).arg(QStringList(SELECT[i].values()).join(' '));
     }
     qDebug();
 

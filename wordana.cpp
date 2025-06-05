@@ -2,6 +2,25 @@
 #include<QDebug>
 #include<global.h>
 
+// 关键字集合
+const QVector<QString> K = {
+    "int","void","while","if","else","return","float","string",
+    "char","break","const","do","struct","case","for","default"
+};
+
+// 界符集合
+const QVector<QString> P = {
+    "-","/","(",")","==","<=","<","+","*",">","=",",",";","++",
+    "{","}","\'","\"",">=","--","&&","||","<<",">>","[","]","!","!="
+};
+
+QVector <QString> I;				//标识符表
+QVector <float> C;                  //常数表
+QVector <QString> S;				//字符或字符串常量表
+QVector <QString> Tokens;			//Token序列
+
+QVector <QChar> Pdouble = { '=','<','+','>','-','&','|','!' };
+
 int WordAna::count = 0;
 int flag = 0;
 

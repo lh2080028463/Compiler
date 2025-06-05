@@ -5,7 +5,7 @@
 #pragma once
 #include <iostream>
 #include <vector>
-#include <string>
+#include <QString>
 #include <sstream>
 
 using namespace std;
@@ -15,7 +15,7 @@ class ReToken
 public:
     char type;//单词类别
     int number;//若存在则为表址 不存在为0
-    string name;//单词名称
+    QString name;//单词名称
 };
 
 class WordAnalysis
