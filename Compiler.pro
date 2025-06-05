@@ -14,6 +14,7 @@ SOURCES += \
     mainwindow.cpp \
     quatshow.cpp \
     symboltable.cpp \
+    symtable.cpp \
     synana.cpp \
     wordana.cpp \
     optimize.cpp
@@ -23,6 +24,7 @@ HEADERS += \
     mainwindow.h \
     quatshow.h \
     symboltable.h \
+    symtable.h \
     synana.h \
     wordana.h \
     optimize.h \
@@ -33,7 +35,7 @@ HEADERS += \
 FORMS += \
     mainwindow.ui \
     quatshow.ui \
-    tables.ui
+    symtable.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
