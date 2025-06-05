@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MainWindow</class>
- <widget class="QMainWindow" name="MainWindow">
+ <class>symtable</class>
+ <widget class="QMainWindow" name="symtable">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -14,67 +14,11 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QTableWidget" name="SYNBL">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>60</y>
-      <width>311</width>
-      <height>141</height>
-     </rect>
-    </property>
-    <column>
-     <property name="text">
-      <string>序号</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>标识符名</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>种类</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>地址指针</string>
-     </property>
-    </column>
-   </widget>
-   <widget class="QLineEdit" name="lineEdit">
-    <property name="geometry">
-     <rect>
-      <x>130</x>
-      <y>30</y>
-      <width>51</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>符号表总表</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="lineEdit_2">
-    <property name="geometry">
-     <rect>
-      <x>110</x>
-      <y>240</y>
-      <width>41</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>类型表</string>
-    </property>
-   </widget>
    <widget class="QLineEdit" name="lineEdit_3">
     <property name="geometry">
      <rect>
-      <x>520</x>
-      <y>30</y>
+      <x>570</x>
+      <y>40</y>
       <width>51</width>
       <height>20</height>
      </rect>
@@ -83,11 +27,34 @@
      <string>函数信息表</string>
     </property>
    </widget>
+   <widget class="QTableWidget" name="VALL">
+    <property name="geometry">
+     <rect>
+      <x>400</x>
+      <y>290</y>
+      <width>151</width>
+      <height>192</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="lineEdit_2">
+    <property name="geometry">
+     <rect>
+      <x>160</x>
+      <y>250</y>
+      <width>41</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>类型表</string>
+    </property>
+   </widget>
    <widget class="QLineEdit" name="lineEdit_4">
     <property name="geometry">
      <rect>
-      <x>360</x>
-      <y>250</y>
+      <x>410</x>
+      <y>260</y>
       <width>51</width>
       <height>20</height>
      </rect>
@@ -96,36 +63,11 @@
      <string>活动记录表</string>
     </property>
    </widget>
-   <widget class="QTableWidget" name="TAPEL">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>270</y>
-      <width>231</width>
-      <height>141</height>
-     </rect>
-    </property>
-    <column>
-     <property name="text">
-      <string>序号</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>类型</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>类型信息指针</string>
-     </property>
-    </column>
-   </widget>
    <widget class="QTableWidget" name="PFINFL">
     <property name="geometry">
      <rect>
-      <x>350</x>
-      <y>60</y>
+      <x>400</x>
+      <y>70</y>
       <width>381</width>
       <height>131</height>
      </rect>
@@ -156,15 +98,73 @@
      </property>
     </column>
    </widget>
-   <widget class="QTableWidget" name="VALL">
+   <widget class="QTableWidget" name="TAPEL">
     <property name="geometry">
      <rect>
-      <x>350</x>
+      <x>70</x>
       <y>280</y>
-      <width>151</width>
-      <height>192</height>
+      <width>231</width>
+      <height>141</height>
      </rect>
     </property>
+    <column>
+     <property name="text">
+      <string>序号</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>类型</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>类型信息指针</string>
+     </property>
+    </column>
+   </widget>
+   <widget class="QLineEdit" name="lineEdit">
+    <property name="geometry">
+     <rect>
+      <x>180</x>
+      <y>40</y>
+      <width>51</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>符号表总表</string>
+    </property>
+   </widget>
+   <widget class="QTableWidget" name="SYNBL">
+    <property name="geometry">
+     <rect>
+      <x>60</x>
+      <y>70</y>
+      <width>311</width>
+      <height>141</height>
+     </rect>
+    </property>
+    <column>
+     <property name="text">
+      <string>序号</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>标识符名</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>种类</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>地址指针</string>
+     </property>
+    </column>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">

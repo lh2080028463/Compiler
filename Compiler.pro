@@ -12,6 +12,7 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     symboltable.cpp \
+    symtable.cpp \
     synana.cpp \
     wordana.cpp \
     optimize.cpp
@@ -21,6 +22,7 @@ HEADERS += \
     createquat.h \
     mainwindow.h \
     symboltable.h \
+    symtable.h \
     synana.h \
     wordana.h \
     optimize.h \
@@ -29,7 +31,7 @@ HEADERS += \
 # UI文件
 FORMS += \
     mainwindow.ui \
-    tables.ui
+    symtable.ui
 
 # 资源文件（确保路径正确）
 RESOURCES += resources.qrc
