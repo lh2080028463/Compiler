@@ -9,9 +9,11 @@ CONFIG += c++17
 # 源文件
 SOURCES += \
     createquat.cpp \
+    graana_result.cpp \
     main.cpp \
     mainwindow.cpp \
     quat_result.cpp \
+    switch.cpp \
     symboltable.cpp \
     symtable.cpp \
     synana.cpp \
@@ -21,8 +23,10 @@ SOURCES += \
 # 头文件
 HEADERS += \
     createquat.h \
+    graana_result.h \
     mainwindow.h \
     quat_result.h \
+    switch.h \
     symboltable.h \
     symtable.h \
     synana.h \
@@ -32,8 +36,10 @@ HEADERS += \
 
 # UI文件
 FORMS += \
+    graana_result.ui \
     mainwindow.ui \
     quat_result.ui \
+    switch.ui \
     symtable.ui
 
 # 资源文件（确保路径正确）
