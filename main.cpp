@@ -2,6 +2,7 @@
 
 #include <QApplication>
 
+QString input_s;//输入的待编译程序
 
 int main(int argc, char *argv[])
 {

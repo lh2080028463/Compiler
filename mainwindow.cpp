@@ -5,6 +5,8 @@
 #include <QGraphicsScene>
 #include <QGraphicsPixmapItem>
 #include <QMovie>
+#include<QFile>
+#include<QFileDialog>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)
@@ -48,6 +50,29 @@ MainWindow::MainWindow(QWidget *parent)
     settingsBtn->setIcon(QIcon(":/images/settings.png"));
     settingsBtn->setIconSize(QSize(32, 32));
     settingsBtn->move(10, 10);
+
+
+    extern QString input_s;
+    connect(ui->inputButton,&QPushButton::clicked,[=](){//文本框输入
+        int flag=ui->comboBox->currentIndex();//0为直接输入，1为文件输入
+        if(flag){
+            QString runPath = QCoreApplication::applicationDirPath();//获取项目的根路径
+            QString file_name = QFileDialog::getOpenFileName(this,QStringLiteral("选择文件"),runPath,"Text Files(*.txt)",nullptr,QFileDialog::DontResolveSymlinks);
+            ui->textEdit->clear();
+            if(!file_name.isEmpty()){
+                QFile file(file_name);
+                bool isok = file.open(QIODevice::ReadOnly);
+                if(isok){
+                    ui->textEdit->setPlainText(file.readAll());
+                }
+                file.close();
+            }
+        }
+        input_s = ui->textEdit->toPlainText();
+        input_s+="#";
+    });
+
+
 }
 
 MainWindow::~MainWindow()
