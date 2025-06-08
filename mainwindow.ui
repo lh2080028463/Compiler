@@ -122,7 +122,21 @@
      <string/>
     </property>
    </widget>
+   <widget class="QPushButton" name="quitButton">
+    <property name="geometry">
+     <rect>
+      <x>640</x>
+      <y>280</y>
+      <width>81</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>退出</string>
+    </property>
+   </widget>
    <zorder>label_3</zorder>
+   <zorder>quitButton</zorder>
    <zorder>textEdit</zorder>
    <zorder>label</zorder>
    <zorder>textBrowser</zorder>
@@ -130,19 +144,6 @@
    <zorder>inputButton</zorder>
    <zorder>comboBox</zorder>
    <zorder>nextButton</zorder>
-   <widget class="QPushButton" name="quitButton">
-    <property name="geometry">
-     <rect>
-      <x>340</x>
-      <y>480</y>
-      <width>111</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>退出</string>
-    </property>
-   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -150,7 +151,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>25</height>
+     <height>18</height>
     </rect>
    </property>
   </widget>
