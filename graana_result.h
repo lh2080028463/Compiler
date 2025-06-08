@@ -15,6 +15,9 @@ public:
     explicit GraAna_result(QWidget *parent = nullptr);
     ~GraAna_result();
 
+signals:
+    void back();
+
 private:
     Ui::GraAna_result *ui;
 };

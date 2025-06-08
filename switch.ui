@@ -34,7 +34,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
 &lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:24pt; font-weight:700; color:#ffaa00;&quot;&gt;选择要查看的结果&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="graButton">
     <property name="geometry">
      <rect>
       <x>250</x>
@@ -47,7 +47,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
      <string>语法分析结果</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_2">
+   <widget class="QPushButton" name="quatButton">
     <property name="geometry">
      <rect>
       <x>510</x>
@@ -60,7 +60,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
      <string>四元式</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_3">
+   <widget class="QPushButton" name="symButton">
     <property name="geometry">
      <rect>
       <x>250</x>
@@ -84,6 +84,19 @@ li.checked::marker { content: &quot;\2612&quot;; }
     </property>
     <property name="text">
      <string>PushButton</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="returnButton">
+    <property name="geometry">
+     <rect>
+      <x>390</x>
+      <y>300</y>
+      <width>81</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>返回</string>
     </property>
    </widget>
   </widget>

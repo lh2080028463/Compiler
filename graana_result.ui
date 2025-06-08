@@ -60,7 +60,7 @@
      <string>Follow集</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="quitButton">
     <property name="geometry">
      <rect>
       <x>370</x>

@@ -51,6 +51,7 @@ MainWindow::MainWindow(QWidget *parent)
     settingsBtn->setIconSize(QSize(32, 32));
     settingsBtn->move(10, 10);
 
+    this->window2=new Switch;//实例化页面二
 
     extern QString input_s;
     connect(ui->inputButton,&QPushButton::clicked,[=](){//文本框输入
@@ -71,7 +72,21 @@ MainWindow::MainWindow(QWidget *parent)
         input_s = ui->textEdit->toPlainText();
         input_s+="#";
     });
+    connect(ui->nextButton,&QPushButton::clicked,[=](){//下一步
+        if(input_s.length()){
+            this->hide();
+            this->window2->show();
+        }
+    });
 
+    connect(this->window2,&Switch::back,[=](){//从窗口2返回
+        this->window2->hide();
+        this->show();
+    });
+
+    connect(ui->quitButton,&QPushButton::clicked,[=](){//退出
+        exit(0);
+    });
 
 }
 

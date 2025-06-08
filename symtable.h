@@ -15,6 +15,9 @@ public:
     explicit symtable(QWidget *parent = nullptr);
     ~symtable();
 
+signals:
+    void back();
+
 private:
     Ui::symtable *ui;
 };
