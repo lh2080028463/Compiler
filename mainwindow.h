@@ -19,8 +19,8 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-    QGraphicsView *view;  // 如果使用QGraphicsView方法需要声明这个成员变量
-    void resizeEvent(QResizeEvent *event) override;  // 添加这行声明
+   // QGraphicsView *view;  // 如果使用QGraphicsView方法需要声明这个成员变量
+    //void resizeEvent(QResizeEvent *event) override;  // 添加这行声明
 
     Switch* window2=NULL;//选择界面实例化对象
 

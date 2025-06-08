@@ -29,7 +29,7 @@
      <rect>
       <x>170</x>
       <y>70</y>
-      <width>51</width>
+      <width>81</width>
       <height>16</height>
      </rect>
     </property>
@@ -64,9 +64,9 @@
     <property name="geometry">
      <rect>
       <x>640</x>
-      <y>220</y>
+      <y>217</y>
       <width>81</width>
-      <height>18</height>
+      <height>21</height>
      </rect>
     </property>
     <property name="text">
@@ -106,6 +106,30 @@
      <string>下一步</string>
     </property>
    </widget>
+   <widget class="QLabel" name="label_3">
+    <property name="geometry">
+     <rect>
+      <x>8</x>
+      <y>8</y>
+      <width>791</width>
+      <height>561</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"/>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <zorder>label_3</zorder>
+   <zorder>textEdit</zorder>
+   <zorder>label</zorder>
+   <zorder>textBrowser</zorder>
+   <zorder>label_2</zorder>
+   <zorder>inputButton</zorder>
+   <zorder>comboBox</zorder>
+   <zorder>nextButton</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -113,7 +137,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>18</height>
+     <height>25</height>
     </rect>
    </property>
   </widget>
