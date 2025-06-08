@@ -15,6 +15,9 @@ public:
     explicit Quat_result(QWidget *parent = nullptr);
     ~Quat_result();
 
+signals:
+    void back();
+
 private:
     Ui::Quat_result *ui;
 };

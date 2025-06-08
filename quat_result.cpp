@@ -6,6 +6,11 @@ Quat_result::Quat_result(QWidget *parent)
     , ui(new Ui::Quat_result)
 {
     ui->setupUi(this);
+
+    //返回switch窗口
+    connect(ui->quitButton,&QPushButton::clicked,[=](){
+        emit this->back();
+    });
 }
 
 Quat_result::~Quat_result()
