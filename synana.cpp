@@ -238,7 +238,7 @@ bool SynAna::GetLL1Table()
     qDebug();
 
     // 求First集
-    QMap<QString, QSet<QString>> FIRST_VNVT;
+    QMap<QString, QVector<QString>> FIRST_VNVT;
     QVector<QSet<QString>> FIRST(grammar.size());
 
     // 终结符First集为本身
@@ -288,32 +288,58 @@ bool SynAna::GetLL1Table()
     qDebug();
 
     // 求Follow集
-    QMap<QString, QSet<QString>> FOLLOW;
+    QMap<QString, QVector<QString>> FOLLOW;
     for (const auto& vn : VNQList)
         FOLLOW[vn] = {};
-    FOLLOW[VNQList.first()].insert("#");
+    FOLLOW[VNQList.first()].push_back("#");
 
     change = true;
     while (change) {
         change = false;
-        for (int m = 0; m < grammar.size(); ++m) {
-            const auto& production = grammar[m];
-            QSet<QString> Trailer = FOLLOW[VNQList[leftQList[m]]];
-
-            for (auto it = production.rbegin(); it != production.rend(); ++it) {
-                if (VNQList.contains(*it)) {
-                    int oldSize = FOLLOW[*it].size();
-                    FOLLOW[*it].unite(Trailer);
-                    if (FOLLOW[*it].size() > oldSize) change = true;
-
-                    if (FIRST_VNVT[*it].contains("<空>")) {
-                        Trailer.unite(FIRST_VNVT[*it]);
-                        Trailer.remove("<空>");
-                    } else {
-                        Trailer = FIRST_VNVT[*it];
+        int m=0;
+        for (auto j = grammar.begin(); j != grammar.end(); j++, m++)
+        {
+            //Trailer <- Follow(A)
+            QVector<QString> Trailer = FOLLOW[VNQList[leftQList[m]]];
+            //从后往前遍历产生式右部
+            for (auto i = j->rbegin(); i != j->rend(); i++)
+            {
+                //如果bi是非终结符，将其后跟着的单词first加到follow中
+                if (find(VNQList.begin(), VNQList.end(), *i) != VNQList.end())
+                {
+                    //Follow(bi) += Trailer,存入无重复元素
+                    for (auto k = Trailer.begin(); k != Trailer.end(); k++)
+                    {
+                        if (find(FOLLOW[*i].begin(), FOLLOW[*i].end(), *k) == FOLLOW[*i].end())
+                        {
+                            FOLLOW[*i].push_back(*k);//将当前左部的加到这个元素中
+                            change = true;
+                        }
                     }
-                } else {
-                    Trailer = FIRST_VNVT[*it];
+                    //如果First(bi)包含空，Trailer += First(bi)-"<空>"
+                    if (find(FIRST_VNVT[*i].begin(), FIRST_VNVT[*i].end(), "<空>") != FIRST_VNVT[*i].end())
+                    {
+                        for (auto k = FIRST_VNVT[*i].begin(); k != FIRST_VNVT[*i].end(); k++)
+                        {
+                            if (*k != "<空>")
+                            {
+                                if (find(Trailer.begin(), Trailer.end(), *k) == Trailer.end())
+                                {
+                                    Trailer.push_back(*k);
+                                }
+                            }
+                        }
+                    }
+                    //否则Trailer = First(bi)
+                    else
+                    {
+                        Trailer = FIRST_VNVT[*i];
+                    }
+                }
+                //如果bi是终结符，Trailer = First(bi)
+                else
+                {
+                    Trailer = FIRST_VNVT[*i];
                 }
             }
         }
@@ -321,7 +347,7 @@ bool SynAna::GetLL1Table()
 
     qDebug() << "Follow集：";
     for (const auto& vn : VNQList) {
-        qDebug().noquote() << QString("%1: %2").arg(vn).arg(QStringList(FOLLOW[vn].values()).join(' '));
+        qDebug().noquote() << QString("%1: %2").arg(vn).arg(QStringList(FOLLOW[vn]).join(' '));
     }
     qDebug();
 
@@ -358,13 +384,11 @@ bool SynAna::GetLL1Table()
     qDebug() << "文法满足LL(1)文法要求。";
 
     // 构建LL1分析表
-    for (const auto& vn : VNQList) {
-        for (const auto& vt : VTQList)
-            LL1Table[vn][vt] = -1;
-        LL1Table[vn]["#"] = -1;
-    }
 
     for (int i = 0; i < VNQList.size(); ++i) {
+        for (auto j :VTQList)
+            LL1Table[VNQList[i]][j] = -1;
+        LL1Table[VNQList[i]]["#"] = -1;
         for (int x : rightQList[i]) {
             for (const auto& k : SELECT[x]) {
                 if (VTQList.contains(k) || k == "#")
