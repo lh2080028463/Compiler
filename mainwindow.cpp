@@ -56,7 +56,7 @@ MainWindow::MainWindow(QWidget *parent)
             objCode.scan();
         }
 
-        //print(Tokens,ui->textBrowser);
+        print(Tokens,ui->textBrowser);
 
 
     });

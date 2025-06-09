@@ -15,7 +15,13 @@ public:
     bool scan(QString s, Token& tk);		//词法分析Token序列
 
     template<typename T>
-    void print(QVector<T> v, QTextBrowser *outputWidget);
+    void print(QVector<T> v, QTextBrowser *outputWidget) {
+        QString result;
+        for (const auto &item : v) {
+            result += item + ",";  // 假设 Token 有 toString() 方法
+        }
+        outputWidget->setPlainText(result);
+    }
 
     template<typename T>
     int existT(T t, QVector<T> v);
