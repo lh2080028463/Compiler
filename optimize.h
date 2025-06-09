@@ -13,7 +13,7 @@
 
 class optimize{//优化类
 public:
-    optimize();
+    optimize(){};
 
     struct Token{//Token结构体
         QString name,type;//名称、种类

@@ -12,6 +12,7 @@ SOURCES += \
     graana_result.cpp \
     main.cpp \
     mainwindow.cpp \
+    objectcode.cpp \
     quat_result.cpp \
     switch.cpp \
     symboltable.cpp \
@@ -25,6 +26,7 @@ HEADERS += \
     createquat.h \
     graana_result.h \
     mainwindow.h \
+    objectcode.h \
     quat_result.h \
     switch.h \
     symboltable.h \

@@ -2,6 +2,7 @@
 #define WORDANA_H
 
 #include<QString>
+#include<QTextBrowser>
 
 #include"global.h"
 
@@ -12,8 +13,10 @@ public:
     static int count;
     bool clear();
     bool scan(QString s, Token& tk);		//词法分析Token序列
+
     template<typename T>
-    void print(QVector<T> v);
+    void print(QVector<T> v, QTextBrowser *outputWidget);
+
     template<typename T>
     int existT(T t, QVector<T> v);
     int isI(QString s, int i, Token& tk);		//标识符判断

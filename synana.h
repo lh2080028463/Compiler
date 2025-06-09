@@ -6,12 +6,11 @@
 #include"wordana.h"
 
 
-
-
 class SynAna                                   //递归子程序分析
 {
 
 public:
+    SynAna(){};
     bool AN(QString program);//分析过程
 private:
     bool GetLL1Table();//得到LL1分析表

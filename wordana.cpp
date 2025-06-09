@@ -58,22 +58,22 @@ bool WordAna::scan(QString s, Token& tk)
         if (s[i] == '#')
         {
             qDebug() << "Token:";
-            print(Tokens);
+            //print(Tokens);
             qDebug() << Qt::endl;
             qDebug() << "K:";
-            print(K);
+            //print(K);
             qDebug() << Qt::endl;
             qDebug() << "P:";
-            print(P);
+            //print(P);
             qDebug() << Qt::endl;
             qDebug() << "I:";
-            print(I);
+            //print(I);
             qDebug() << Qt::endl;
             qDebug() << "C:";
-            print(C);
+           // print(C);
             qDebug() << Qt::endl;
             qDebug() << "S:";
-            print(S);
+           // print(S);
             qDebug() << Qt::endl;
             qDebug() << Qt::endl;
             tk.type = TokenType::O;
@@ -403,16 +403,12 @@ int WordAna::isP(QString s, int i, Token& tk)
 }
 
 template<typename T>
-void WordAna::print(QVector<T> v)
-{
-    for (int i = 0; i < v.size(); i++)
-    {
-        qDebug() << v[i];
-        if (i != v.size() - 1 && count != 1)
-            qDebug() << ",";
-        else
-            qDebug() << Qt::endl;
+void WordAna::print(QVector<T> v, QTextBrowser *outputWidget) {
+    QString result;
+    for (const auto &item : v) {
+        result += item.toString() + "\n";  // 假设 Token 有 toString() 方法
     }
+    outputWidget->setPlainText(result);
 }
 
 int WordAna::val(QChar ch)

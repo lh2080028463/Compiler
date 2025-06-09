@@ -8,6 +8,10 @@
 #include<QFile>
 #include<QFileDialog>
 
+extern QVector <QString> Tokens;
+extern QString input_s;
+
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)
 {
@@ -22,7 +26,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     this->window2=new Switch;//实例化页面二
 
-    extern QString input_s;
+
     connect(ui->inputButton,&QPushButton::clicked,[=](){//文本框输入
         int flag=ui->comboBox->currentIndex();//0为直接输入，1为文件输入
         if(flag){
@@ -40,9 +44,24 @@ MainWindow::MainWindow(QWidget *parent)
         }
         input_s = ui->textEdit->toPlainText();
         input_s+="#";
+
+        SynAna s;
+
+        if (s.AN(input_s))
+        {
+            optimize op;
+            op.run();
+            ObjectCode objCode;
+            objCode.clear();
+            objCode.scan();
+        }
+
+        //print(Tokens,ui->textBrowser);
+
+
     });
     connect(ui->nextButton,&QPushButton::clicked,[=](){//下一步
-        if(input_s.length()){
+        if(input_s.length()>1){
             this->hide();
             this->window2->show();
         }
