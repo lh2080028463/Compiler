@@ -9,11 +9,11 @@
 //#include<QTextStream>
 #include<fstream>
 
-#define LEN 1000//长度
+#define LEN 100//长度
 
 class optimize{//优化类
 public:
-    optimize(){};
+    //optimize(){};
 
     struct Token{//Token结构体
         QString name,type;//名称、种类

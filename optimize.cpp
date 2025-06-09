@@ -2,7 +2,7 @@
 #include "createquat.h"
 
 
-extern quat qt[1000];//四元式
+extern quat qt[100];//四元式
 
 void optimize::initquat(){//四元式数组转成结构体，以qt为处理对象，初始化qua
     for (int i = 0; qt[i].op != ""; i++){//遍历所有有操作符的四元式，转移至qua中
