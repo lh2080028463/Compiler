@@ -260,7 +260,8 @@ bool SynAna::GetLL1Table()
         for (auto j = grammar.begin(); j != grammar.end(); j++, m++)
         {
             //b=b1b2b3..., bi是VN | VT, tempFIRST_VNVT <- First(b1) - {空}
-            QVector<QString> tempFIRST_VNVT = FIRST_VNVT[*(j->begin())];
+            QVector<QString> tempFIRST_VNVT;
+            tempFIRST_VNVT= FIRST_VNVT[*(j->begin())];
             auto nullItera = find(tempFIRST_VNVT.begin(), tempFIRST_VNVT.end(), "<空>");
             if (nullItera != tempFIRST_VNVT.end())tempFIRST_VNVT.erase(nullItera);
             int i = 1;
