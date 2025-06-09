@@ -161,7 +161,10 @@ bool SynAna::GetLL1Table()
     QString temp;
     QVector<QString> tempRight, tempRightAll;
 
-    QFile file("TextFile/grammar.txt");
+    QFile file("TextFile\\grammar.txt");
+    //QFile file(QDir::currentPath()+"/TextFile/grammar.txt");
+    qDebug()<<QDir::currentPath();
+
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         qDebug() << "无法打开grammar.txt";
         return false;
@@ -238,8 +241,8 @@ bool SynAna::GetLL1Table()
     qDebug();
 
     // 求First集
-    QMap<QString, QSet<QString>> FIRST_VNVT;
-    QVector<QSet<QString>> FIRST(grammar.size());
+    QMap<QString, QVector<QString>> FIRST_VNVT;
+    QVector<QVector<QString>> FIRST(grammar.size());
 
     // 终结符First集为本身
     for (const auto& vt : VTQList)
@@ -252,43 +255,67 @@ bool SynAna::GetLL1Table()
     bool change = true;
     while (change) {
         change = false;
-        for (int m = 0; m < grammar.size(); ++m) {
-            const auto& production = grammar[m];
-            QSet<QString> tempFIRST_VNVT = FIRST_VNVT[production.first()];
-            tempFIRST_VNVT.remove("<空>");
-
+        int m = 0;
+        //对每一个产生式A->b
+        for (auto j = grammar.begin(); j != grammar.end(); j++, m++)
+        {
+            //b=b1b2b3..., bi是VN | VT, tempFIRST_VNVT <- First(b1) - {空}
+            QVector<QString> tempFIRST_VNVT = FIRST_VNVT[*(j->begin())];
+            auto nullItera = find(tempFIRST_VNVT.begin(), tempFIRST_VNVT.end(), "<空>");
+            if (nullItera != tempFIRST_VNVT.end())tempFIRST_VNVT.erase(nullItera);
             int i = 1;
-            while (i < production.size() && FIRST_VNVT[production[i-1]].contains("<空>")) {
-                tempFIRST_VNVT.unite(FIRST_VNVT[production[i]]);
-                tempFIRST_VNVT.remove("<空>");
-                ++i;
+            //当First(b0...bi-1)包含空，即b0到bi-1都可为空，tempFIRST_VNVT += First(bi)
+            while (find(FIRST_VNVT[(*j)[i - 1]].begin(), FIRST_VNVT[(*j)[i - 1]].end(), "<空>")
+                       != FIRST_VNVT[(*j)[i - 1]].end()
+                   && i <= (int)j->size() - 1)
+            {
+                for (auto k = FIRST_VNVT[(*j)[i]].begin(); k != FIRST_VNVT[(*j)[i]].end(); k++)
+                    if (*k != "<空>") tempFIRST_VNVT.push_back(*k);
+                i++;
             }
-
-            if (i == production.size() && FIRST_VNVT[production.last()].contains("<空>"))
-                tempFIRST_VNVT.insert("<空>");
-
-            if (production.size() == 1 && production[0] == "<空>")
-                tempFIRST_VNVT.insert("<空>");
-
-            QString leftVN = VNQList[leftQList[m]];
-            if (FIRST_VNVT[leftVN].unite(tempFIRST_VNVT).size() > FIRST_VNVT[leftVN].size()) {
-                change = true;
+            //如果右部可推出空，tempFIRST_VNVT += <空>
+            if (i == (int)j->size() - 1
+                && find(FIRST_VNVT[(*j)[i - 1]].begin(), FIRST_VNVT[(*j)[i - 1]].end(), "<空>")
+                       != FIRST_VNVT[(*j)[i - 1]].end())
+                tempFIRST_VNVT.push_back("<空>");
+            //如果右部=<空>，tempFIRST_VNVT <- <空>
+            if (j->size() == 1 && *(j->begin()) == "<空>")
+                tempFIRST_VNVT.push_back("<空>");
+            //更新左部的First集
+            for (auto k = tempFIRST_VNVT.begin(); k != tempFIRST_VNVT.end(); k++)
+            {
+                QString tempVN = VNQList[leftQList[m]];
+                if (find(FIRST_VNVT[tempVN].begin(), FIRST_VNVT[tempVN].end(), *k) == FIRST_VNVT[tempVN].end())
+                {
+                    FIRST_VNVT[tempVN].push_back(*k);
+                    change = true;
+                }
             }
-
-            if (FIRST[m].unite(tempFIRST_VNVT).size() > FIRST[m].size()) {
-                change = true;
+            //更新右部的First集
+            for (auto k = tempFIRST_VNVT.begin(); k != tempFIRST_VNVT.end(); k++)
+            {
+                if (find(FIRST[m].begin(), FIRST[m].end(), *k) == FIRST[m].end())
+                {
+                    FIRST[m].push_back(*k);
+                    change = true;
+                }
             }
         }
     }
 
     qDebug() << "First集：";
-    for (int m = 0; m < FIRST.size(); ++m) {
-        qDebug().noquote() << QString("%1: %2").arg(m+1).arg(QStringList(FIRST[m].values()).join(' '));
+    for(int m=1;m<=FIRST.size();m++){
+        qDebug()<<m<<": ";
+        for(int m1=0;m1<FIRST[m-1].size();m1++){
+            qDebug()<<FIRST[m-1][m1];
+        }
     }
-    qDebug();
+    // for (int m = 0; m < FIRST.size(); ++m) {
+    //     qDebug().noquote() << QString("%1: %2").arg(m+1).arg(QStringList(FIRST[m].values()).join(' '));
+    // }
 
     // 求Follow集
-    QMap<QString, QSet<QString>> FOLLOW;
+    QMap<QString, QVector<QString>> FOLLOW;
     for (const auto& vn : VNQList)
         FOLLOW[vn] = {};
     FOLLOW[VNQList.first()].insert("#");
@@ -326,33 +353,53 @@ bool SynAna::GetLL1Table()
     qDebug();
 
     // 求Select集
-    QVector<QSet<QString>> SELECT(grammar.size());
+    QVector<QVector<QString>> SELECT(grammar.size());
     for (int i = 0; i < grammar.size(); ++i) {
-        if (!FIRST[i].contains("<空>")) {
+        //如果First(b)不包含空，即右部不能推出空，select集等于右部first集
+        if (find(FIRST[i].begin(), FIRST[i].end(), "<空>") == FIRST[i].end())
             SELECT[i] = FIRST[i];
-        } else {
+        //否则，select集等于右部first集并上左部follow集
+        else
+        {
             SELECT[i] = FOLLOW[VNQList[leftQList[i]]];
-            SELECT[i].unite(FIRST[i]);
-            SELECT[i].remove("<空>");
+            for (auto j = FIRST[i].begin(); j != FIRST[i].end(); j++)
+            {
+                if (*j != "<空>")
+                    if (find(SELECT[i].begin(), SELECT[i].end(), *j) == SELECT[i].end())
+                        SELECT[i].push_back(*j);
+            }
         }
     }
 
     qDebug() << "Select集：";
-    for (int i = 0; i < SELECT.size(); ++i) {
-        qDebug().noquote() << QString("%1: %2").arg(i+1).arg(QStringList(SELECT[i].values()).join(' '));
+    for(int i=1;i<=SELECT.size();i++){
+        qDebug()<<i<<": ";
+        for(int j=0;j<SELECT[i].size();j++){
+            qDebug()<<SELECT[i][j];
+        }
     }
-    qDebug();
 
-    // 检查是否为LL(1)文法
-    for (int i = 0; i < VNQList.size(); ++i) {
-        QSet<QString> tempSelect;
-        for (int j : rightQList[i]) {
-            if (!tempSelect.intersect(SELECT[j]).isEmpty()) {
-                qDebug() << "文法非LL(1)文法！请检查！";
-                qDebug() << "提示信息：左部" << VNQList[i];
-                return false;
+    // for (int i = 0; i < SELECT.size(); ++i) {
+    //     qDebug().noquote() << QString("%1: %2").arg(i+1).arg(QStringList(SELECT[i].values()).join(' '));
+    // }
+
+    //检查是否为LL1文法
+    for (int i = 0; i < (int)VNQList.size(); i++)
+    {
+        QVector<QString> tempSelect;
+        tempSelect.clear();
+        for (auto j = rightQList[i].begin(); j != rightQList[i].end(); j++)
+        {
+            for (auto k = SELECT[*j].begin(); k != SELECT[*j].end(); k++)
+            {
+                if (find(tempSelect.begin(), tempSelect.end(), *k) == tempSelect.end())
+                    tempSelect.push_back(*k);
+                else
+                {
+                    qDebug() << "文法非LL(1)文法！请检查！\n" << "提示信息：左部" << VNQList[i];
+                    return false;
+                }
             }
-            tempSelect.unite(SELECT[j]);
         }
     }
     qDebug() << "文法满足LL(1)文法要求。";

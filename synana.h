@@ -4,6 +4,7 @@
 #include "symboltable.h"
 #include "createquat.h"
 #include"wordana.h"
+#include<QDir>
 
 
 class SynAna                                   //递归子程序分析
