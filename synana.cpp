@@ -400,8 +400,8 @@ bool SynAna::GetLL1Table()
     qDebug() << "Select集：";
     for(int i=1;i<=SELECT.size();i++){
         qDebug()<<i<<": ";
-        for(int j=0;j<SELECT[i].size();j++){
-            qDebug()<<SELECT[i][j];
+        for(int j=0;j<SELECT[i-1].size();j++){
+            qDebug()<<SELECT[i-1][j];
         }
     }
 
