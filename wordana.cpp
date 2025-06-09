@@ -402,14 +402,7 @@ int WordAna::isP(QString s, int i, Token& tk)
     return re;
 }
 
-template<typename T>
-void WordAna::print(QVector<T> v, QTextBrowser *outputWidget) {
-    QString result;
-    for (const auto &item : v) {
-        result += item.toString() + "\n";  // 假设 Token 有 toString() 方法
-    }
-    outputWidget->setPlainText(result);
-}
+
 
 int WordAna::val(QChar ch)
 {
