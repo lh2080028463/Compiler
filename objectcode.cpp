@@ -539,7 +539,7 @@ int ObjectCode::print()
     QTextStream out(&outFile);
     for (const QString &line : Object) {
         out << line << Qt::endl;
-        qDebug().noquote() << line;  // 使用Qt的日志系统输出到控制台
+        qDebug().noquote() << line;
     }
 
     outFile.close();

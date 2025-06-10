@@ -15,6 +15,9 @@ public:
     QString arg1;//操作数1
     QString arg2;//操作数2
     QString result;//结果
+    QString getStr(){
+        return "("+op+","+arg1+","+arg2+","+result+")";
+    }
 };
 
 class createquat//定义生成四元式类
@@ -41,6 +44,8 @@ public:
     void PRINT();//输出
     static int q;//记录四元式表的长度
     static int t;//作为活跃变量的t后面跟着的数字，用作记录
+
+
 };
 
 

@@ -1,6 +1,8 @@
 #include "switch.h"
 #include "ui_switch.h"
 
+extern quat qt[100];
+
 Switch::Switch(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::Switch)
@@ -34,6 +36,14 @@ Switch::Switch(QWidget *parent)
     connect(ui->quatButton,&QPushButton::clicked,[=](){//进入
         this->hide();
         this->window3->show();
+
+        QString quats;
+        int index=1;
+        for(auto ele:qt){
+            quats += "("+QString::number(index++)+")"+ele.getStr()+"\n";
+        }
+        //window3->ui->textBrowser->setPlainText(quats);
+
     });
     connect(this->window3,&Quat_result::back,[=](){//返回
         this->window3->hide();
