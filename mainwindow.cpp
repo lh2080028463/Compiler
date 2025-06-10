@@ -16,6 +16,7 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    this->setFixedSize(this->geometry().size());
 
     // 加载GIF文件
     piggyMovie = new QMovie(":/images/piggy.gif"); // 使用资源文件路径
@@ -50,8 +51,12 @@ MainWindow::MainWindow(QWidget *parent)
         //清空符号表
         extern QVector<QString>synbl_out;
         extern QVector<QString>typel_out;
+        extern QVector<QString>pfinfl_out;
+        extern QVector<QString>vall_out;
         synbl_out.clear();
         typel_out.clear();
+        pfinfl_out.clear();
+        vall_out.clear();
 
         if (s.AN(input_s))
         {

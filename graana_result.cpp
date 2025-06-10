@@ -7,6 +7,7 @@ GraAna_result::GraAna_result(QWidget *parent)
     , ui(new Ui::GraAna_result)
 {
     ui->setupUi(this);
+    this->setFixedSize(this->geometry().size());
 
     //返回switch窗口
     connect(ui->quitButton,&QPushButton::clicked,[=](){

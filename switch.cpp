@@ -8,6 +8,7 @@ Switch::Switch(QWidget *parent)
     , ui(new Ui::Switch)
 {
     ui->setupUi(this);
+    this->setFixedSize(this->geometry().size());
 
     this->window3=new Quat_result;//显示四元式的窗口
     this->window4=new GraAna_result;//显示语法分析的窗口
@@ -25,7 +26,8 @@ Switch::Switch(QWidget *parent)
         this->window5->show();
         this->window5->setSYN();
         this->window5->setTYP();
-
+        this->window5->setPFI();
+        this->window5->setVAL();
     });
     connect(this->window5,&symtable::back,[=](){//返回
         this->window5->hide();

@@ -19,7 +19,7 @@ public:
     void setSYN();
     void setTYP();
     void setPFI();
-
+    void setVAL();
 
 signals:
     void back();

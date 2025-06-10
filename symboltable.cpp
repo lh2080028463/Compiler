@@ -76,7 +76,7 @@ int SymbolTable::printTable()
 
     extern QVector<QString>synbl_out;
     for (const auto& entry : qAsConst(SYNBL)) {
-        //qDebug().nospace() << qSetFieldWidth(2) << j << "\t" << entry;
+        qDebug().nospace() << qSetFieldWidth(2) << j << "\t" << entry;
         synbl_out.push_back(entry.name);
         synbl_out.push_back(entry.type);
         synbl_out.push_back(entry.category);
@@ -95,7 +95,7 @@ int SymbolTable::printTable()
 
     extern QVector<QString>typel_out;
     for (const auto& entry : qAsConst(TAPEL)) {
-        //qDebug().nospace() << qSetFieldWidth(2) << j << "\t" << entry;
+        qDebug().nospace() << qSetFieldWidth(2) << j << "\t" << entry;
         typel_out.push_back(entry.typeValue);
         typel_out.push_back(entry.typePoint);
 
@@ -107,8 +107,13 @@ int SymbolTable::printTable()
     out << "\n\n函数表\n序号\t层次号\t区距\t参数个数\t参数表指针\n";
     qDebug() << "\n\n函数表\n序号\t层次号\t区距\t参数个数\t参数表指针";
 
+    extern QVector<QString>pfinfl_out;
     for (const auto& entry : qAsConst(PFINFL)) {
         qDebug().nospace() << qSetFieldWidth(2) << j << "\t" << entry;
+        pfinfl_out.push_back(QString::number(entry.level));
+        pfinfl_out.push_back(QString::number(entry.offset));
+        pfinfl_out.push_back(QString::number(entry.paraNum));
+        pfinfl_out.push_back(entry.paraTable);
         out << qSetFieldWidth(2) << j++ << "\t"
             << qSetFieldWidth(5) << entry.level << "\t"
             << qSetFieldWidth(4) << entry.offset << "\t"
@@ -120,8 +125,10 @@ int SymbolTable::printTable()
     out << "\n\n活动记录表VALL\n\n";
     qDebug() << "\n\n活动记录表VALL";
 
+    extern QVector<QString>vall_out;
     for (auto i = VALL.crbegin(); i != VALL.crend(); ++i) {
         qDebug() << j << "   " << *i;
+        vall_out.push_back(*i);
         out << j-- << "   " << *i << "\n";
     }
 

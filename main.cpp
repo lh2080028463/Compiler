@@ -5,6 +5,8 @@
 QString input_s;//输入的待编译程序
 QVector<QString>synbl_out;
 QVector<QString>typel_out;
+QVector<QString>pfinfl_out;
+QVector<QString>vall_out;
 
 int main(int argc, char *argv[])
 {
