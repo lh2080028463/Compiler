@@ -2,6 +2,7 @@
 #define SYMTABLE_H
 
 #include <QMainWindow>
+#include<QTableWidgetItem>
 
 namespace Ui {
 class symtable;
@@ -14,6 +15,11 @@ class symtable : public QMainWindow
 public:
     explicit symtable(QWidget *parent = nullptr);
     ~symtable();
+
+    void setSYN();
+    void setTYP();
+    void setPFI();
+
 
 signals:
     void back();

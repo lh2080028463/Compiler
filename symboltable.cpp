@@ -72,10 +72,16 @@ int SymbolTable::printTable()
 
     int j = 0;
     out << "符号表总表\n序号\t标识符名\t类型\t种类\t地址指针\n";
-    qDebug() << "符号表总表\n序号\t标识符名\t类型\t种类\t地址指针";
+    //qDebug() << "符号表总表\n序号\t标识符名\t类型\t种类\t地址指针";
 
+    extern QVector<QString>synbl_out;
     for (const auto& entry : qAsConst(SYNBL)) {
-        qDebug().nospace() << qSetFieldWidth(2) << j << "\t" << entry;
+        //qDebug().nospace() << qSetFieldWidth(2) << j << "\t" << entry;
+        synbl_out.push_back(entry.name);
+        synbl_out.push_back(entry.type);
+        synbl_out.push_back(entry.category);
+        synbl_out.push_back(entry.address);
+
         out << qSetFieldWidth(2) << j++ << "\t"
             << qSetFieldWidth(8) << entry.name
             << qSetFieldWidth(12) << entry.type
@@ -87,8 +93,12 @@ int SymbolTable::printTable()
     out << "\n\n类型表\n序号\t类型\t类型信息指针\n";
     qDebug() << "\n\n类型表\n序号\t类型\t类型信息指针";
 
+    extern QVector<QString>typel_out;
     for (const auto& entry : qAsConst(TAPEL)) {
-        qDebug().nospace() << qSetFieldWidth(2) << j << "\t" << entry;
+        //qDebug().nospace() << qSetFieldWidth(2) << j << "\t" << entry;
+        typel_out.push_back(entry.typeValue);
+        typel_out.push_back(entry.typePoint);
+
         out << qSetFieldWidth(2) << j++ << "\t"
             << entry.typeValue << "\t" << qSetFieldWidth(12) << entry.typePoint << "\n";
     }
@@ -129,6 +139,14 @@ int SymbolTable::func(Token tk)
         QString addr = QString("PFINFL[%1]").arg(PFINFL.size() - 1);
         SYNBL.append({ tk.value, QStringLiteral("TAPEL[0]"), QStringLiteral("f"), addr });  // 填写符号表总表
     }
+    // if (tk.type == TokenType::I)
+    // {
+    //     VALL.push_back("0");   //填写VALL表参数个数
+    //     PFINFL.push_back({ 0,3,0,"TAPEL[0]" });   //填写函数表
+    //     QString addr = QString("PFINFL[%1]").arg(PFINFL.size() - 1);
+    //     SYNBL.push_back({ tk.value,"TAPEL[0]","f",addr });  //填写符号表总表
+    // }
+
     return 1;
 }
 

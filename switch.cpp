@@ -18,8 +18,12 @@ Switch::Switch(QWidget *parent)
 
     //符号表窗口
     connect(ui->symButton,&QPushButton::clicked,[=](){//进入
+
         this->hide();
         this->window5->show();
+        this->window5->setSYN();
+        this->window5->setTYP();
+
     });
     connect(this->window5,&symtable::back,[=](){//返回
         this->window5->hide();

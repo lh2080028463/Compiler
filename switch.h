@@ -2,6 +2,7 @@
 #define SWITCH_H
 
 #include <QMainWindow>
+#include<QTableWidgetItem>
 #include"quat_result.h"
 #include"graana_result.h"
 #include"symtable.h"

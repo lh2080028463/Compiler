@@ -47,6 +47,12 @@ MainWindow::MainWindow(QWidget *parent)
 
         SynAna s;
 
+        //清空符号表
+        extern QVector<QString>synbl_out;
+        extern QVector<QString>typel_out;
+        synbl_out.clear();
+        typel_out.clear();
+
         if (s.AN(input_s))
         {
             optimize op;
