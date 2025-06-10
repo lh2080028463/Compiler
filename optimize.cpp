@@ -1,5 +1,6 @@
 #include "optimize.h"
 #include "createquat.h"
+#include<QFile>
 
 
 extern quat qt[100];//四元式
@@ -54,7 +55,7 @@ void optimize::initquat(){//四元式数组转成结构体，以qt为处理对�
 
         // 结果初始化
         if ((qt[i].result[0] >= 'a' && qt[i].result[0] <= 'z') || (qt[i].result[0] >= 'A' && qt[i].result[0] <= 'Z')){
-            if (qt[i].result[1] >= '1' && qt[i].result[1] <= '9'){
+            if (qt[i].result.length()>1&&qt[i].result[1] >= '1' && qt[i].result[1] <= '9'){
                 qua[i].ans.type = "2";
             }
             else{
@@ -75,6 +76,7 @@ void optimize::run(){
     initquat();//初始化
     block_num = divide();//划分基本块
     std::fstream File("TextFile\\optQuat.txt", std::fstream::out);
+    //QFile File("TextFile\\optQuat.txt");
     optqua(block_num, File);
     File.close();
     qDebug() << "优化后四元式已输出。";
