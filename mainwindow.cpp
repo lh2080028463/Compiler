@@ -61,8 +61,8 @@ MainWindow::MainWindow(QWidget *parent)
 
         if (s.AN(input_s))
         {
-            optimize op;
-            op.run();
+            Quat_result op;
+            op.opti.run();
             ObjectCode objCode;
             objCode.clear();
             objCode.scan();
