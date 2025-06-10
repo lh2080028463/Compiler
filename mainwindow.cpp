@@ -57,6 +57,7 @@ MainWindow::MainWindow(QWidget *parent)
         typel_out.clear();
         pfinfl_out.clear();
         vall_out.clear();
+        nextflag=0;
 
         if (s.AN(input_s))
         {
@@ -65,6 +66,7 @@ MainWindow::MainWindow(QWidget *parent)
             ObjectCode objCode;
             objCode.clear();
             objCode.scan();
+            nextflag=1;
         }
 
         print(Tokens,ui->textBrowser);
@@ -73,7 +75,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     });
     connect(ui->nextButton,&QPushButton::clicked,[=](){//下一步
-        if(input_s.length()>1){
+        if(input_s.length()>1&&nextflag){
             this->hide();
             this->window2->show();
         }

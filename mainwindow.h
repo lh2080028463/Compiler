@@ -28,6 +28,7 @@ public:
     //void resizeEvent(QResizeEvent *event) override;  // 添加这行声明
 
     Switch* window2=NULL;//选择界面实例化对象
+    int nextflag=0;
 
 private:
     Ui::MainWindow *ui;
