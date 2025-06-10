@@ -13,7 +13,11 @@
 
 class optimize{//优化类
 public:
-    //optimize(){};
+    optimize() {
+        for (int i = 0; i < 15; ++i) {
+            Block[i] = QVector<Quaternion>(); // 显式构造空向量
+        }
+    }
 
     struct Token{//Token结构体
         QString name,type;//名称、种类
@@ -27,7 +31,6 @@ public:
         Token num1;         //操作数1
         Token num2;         //操作数2
         Token ans;          //结果
-
         QString getStr(){
             return "("+op+","+num1.name+","+num2.name+","+ans.name+")";
         }
@@ -49,13 +52,6 @@ public:
         }
     };
 
-    QVector<QVector<ACT_INF> >Act_inf;//活跃信息表
-    QVector<QVector<ACT_SYNBL> >Act_synbl;
-    QVector<QString>objcode;//目标代码
-    QStack<QString>SEM; //保存待返填地址
-    Quaternion qua[LEN];   //四元式数组
-    QVector<Quaternion> Block[15];//存四元式的数组
-    QVector<QVector<Quaternion>> ToTarget;//存四元式数组的数组
 
     //DAG
     struct Node{//DAG节点
@@ -70,6 +66,16 @@ public:
         int num = 0;//节点数量
         Node node[LEN];//存放DAG结点
     }dag;
+
+
+    QVector<QVector<ACT_INF> >Act_inf;//活跃信息表
+    QVector<QVector<ACT_SYNBL> >Act_synbl;
+    QVector<QString>objcode;//目标代码
+    QStack<QString>SEM; //保存待返填地址
+    Quaternion qua[LEN];   //四元式数组
+    QVector<Quaternion> Block[15];//存四元式的数组
+    QVector<QVector<Quaternion>> ToTarget;//存四元式数组的数组
+
 
     //函数
     void run();//运行

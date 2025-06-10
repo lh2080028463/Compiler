@@ -3,7 +3,7 @@
 
 extern quat qt[100];//四元式区
 extern QVector <QString> Object;
-
+#include<QFile>
 
 Quat_result::Quat_result(QWidget *parent)
     : QMainWindow(parent)
@@ -37,11 +37,20 @@ void Quat_result::show(){
 
     results.clear();
     //优化后四元式输出
-    for(auto ele:Block){
-        if(!ele.empty())
-        for(auto q:ele){
-            if(q.getStr()!="(,,,)")
-                results+="("+QString::number(index++)+") "+q.getStr()+"\n";
+
+    QFile optQu("TextFile/optQuat.txt");
+
+    if (!optQu.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        qCritical() << "无法打开文件: TextFile/optQuat.txt";
+        return;
+    }
+
+    QTextStream tool(&optQu);
+
+    while (!tool.atEnd()) {
+        QString tem = tool.readLine().trimmed();
+        if (!tem.isEmpty()) {
+            results += tem+"\n";
         }
     }
     ui->textBrowser_2->setPlainText(results);
@@ -50,7 +59,7 @@ void Quat_result::show(){
     results.clear();
     //目标代码输出
     for (auto line : Object) {
-        results+=line;
+        results+=line+"\n";
     }
     ui->textBrowser_3->setPlainText(results);
 }

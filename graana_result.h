@@ -15,6 +15,7 @@ class GraAna_result : public QMainWindow
 public:
     explicit GraAna_result(QWidget *parent = nullptr);
     ~GraAna_result();
+    void show();
 
 signals:
     void back();
