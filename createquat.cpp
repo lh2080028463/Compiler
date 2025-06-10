@@ -321,5 +321,7 @@ void createquat::PRINT()//打印四元式表
         qi++;
     }
     File.close();
+
+
     qDebug() << "四元式已输出. . .";
 }

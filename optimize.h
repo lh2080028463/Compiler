@@ -27,6 +27,10 @@ public:
         Token num1;         //操作数1
         Token num2;         //操作数2
         Token ans;          //结果
+
+        QString getStr(){
+            return "("+op+","+num1.name+","+num2.name+","+ans.name+")";
+        }
     };
 
     struct ACT_INF{//四元式活跃信息

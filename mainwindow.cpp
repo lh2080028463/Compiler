@@ -59,6 +59,7 @@ MainWindow::MainWindow(QWidget *parent)
         print(Tokens,ui->textBrowser);
 
 
+
     });
     connect(ui->nextButton,&QPushButton::clicked,[=](){//下一步
         if(input_s.length()>1){
