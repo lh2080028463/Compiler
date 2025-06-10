@@ -31,8 +31,8 @@ bool SynAna::AN(QString program)
     WordAna wordAna;
     wordAna.clear();
     wordAna.scan(program, nowWord);
-    //qDebug() << nowWord.value << Qt::endl;
-    //qDebug() << "1" << Qt::endl;
+    //qDebug() << nowWord.value ;
+    //qDebug() << "1" ;
     while (1)
     {
         topSymbol = stack.back();
@@ -45,15 +45,15 @@ bool SynAna::AN(QString program)
                 || (topSymbol == "<无符号整数>" && nowWord.type == TokenType::C))
             {
                 lastWord = nowWord;
-                //qDebug() << lastWord.value << Qt::endl;
+                //qDebug() << lastWord.value ;
                 wordAna.scan(program, nowWord);
-                //qDebug()<< nowWord.value << Qt::endl;
+                //qDebug()<< nowWord.value ;
 
             }
             else
             {
-                qDebug()<<"语法错误！请检查！"<<Qt::endl;
-                qDebug() << "错误信息：" + nowWord.value << Qt::endl;
+                qDebug()<<"语法错误！请检查！";
+                qDebug() << "错误信息：" + nowWord.value;
                 return false;
             }
         }
@@ -69,8 +69,8 @@ bool SynAna::AN(QString program)
                 graNum = LL1Table[topSymbol][nowWord.value];
             if (graNum == -1)
             {
-                qDebug() << "语法错误！请检查！" << Qt::endl;
-                qDebug() << "错误信息：" + nowWord.value<< Qt::endl;
+                qDebug() << "语法错误！请检查！" ;
+                qDebug() << "错误信息：" + nowWord.value;
                 return false;
             }
             else
@@ -94,23 +94,23 @@ bool SynAna::AN(QString program)
         {
             if (nowWord.value == "#")
             {
-                qDebug() << "语法分析已完成！" << Qt::endl;
+                qDebug() << "语法分析已完成！" ;
                 //wordAna.print(Token);
                 break;
             }
             else
             {
-                qDebug() << "语法错误！请检查！" << Qt::endl;
-                qDebug() << "错误信息：已读取所有源码，语法分析器未成功结束！" << Qt::endl;
+                qDebug() << "语法错误！请检查！" ;
+                qDebug() << "错误信息：已读取所有源码，语法分析器未成功结束！" ;
                 return false;
                 //exit(1);
             }
         }
         else
         {
-            qDebug() << "语法错误！请检查！" << Qt::endl;
-            qDebug() << "错误信息：未知错误！" << Qt::endl;
-            qDebug() << topSymbol << Qt::endl;
+            qDebug() << "语法错误！请检查！" ;
+            qDebug() << "错误信息：未知错误！" ;
+            qDebug() << topSymbol ;
             return false;
             //exit(1);
         }
