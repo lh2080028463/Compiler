@@ -24,7 +24,7 @@ void GraAna_result::show(){
     QString results;
     QFile first("TextFile/First.txt");
     if (!first.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        qCritical() << "无法打开文件: TextFile/FIRST.txt";
+        qCritical() << "无法打开文件: TextFile/First.txt";
         return;
     }
 
@@ -42,7 +42,7 @@ void GraAna_result::show(){
     //输出follow集
     QFile follow("TextFile/Follow.txt");
     if (!first.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        qCritical() << "无法打开文件: TextFile/FOLLOW.txt";
+        qCritical() << "无法打开文件: TextFile/Follow.txt";
         return;
     }
 

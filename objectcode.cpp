@@ -132,16 +132,12 @@ QString ObjectCode::choose(const QString &s, int comma, int lag)
             if (lag == 0) {
                 // 查找下一个分隔符
                 for (j = i + 1; j < s.size() && s[j] != '(' && s[j] != ',' && s[j] != ')'; j++) {}
-                if (j > i + 1) {
                     return s.mid(i + 1, j - i - 1); // 获取逗号后的内容
-                }
             }
             else if (lag == 1) {
                 // 查找下一个分隔符
                 for (j = i + 1; j < s.size() && s[j] != '(' && s[j] != ',' && s[j] != ')'; j++) {}
-                if (j + 1 < s.size()) {
                     return s.mid(j + 1, 1); // 获取分隔符后的单个字符
-                }
             }
             else {
                 qCritical() << "错误！参数lag无效";
