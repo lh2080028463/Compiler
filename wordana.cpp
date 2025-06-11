@@ -14,6 +14,7 @@ const QVector<QString> P = {
     "{","}","\'","\"",">=","--","&&","||","<<",">>","[","]","!","!="
 };
 
+
 QVector <QString> I;				//标识符表
 QVector <float> C;                  //常数表
 QVector <QString> S;				//字符或字符串常量表

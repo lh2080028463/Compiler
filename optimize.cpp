@@ -399,22 +399,6 @@ QString optimize::calcu(QString opl, QString B, QString C)   //计算两个数�
     else if(opl[0]=='/'){
         val = B.toInt() / C.toInt();
     }
-    // a = opl[0];//操作符
-    // switch (a)
-    // {
-    // case '+':
-    //     val = atof(B.c_str()) + atof(C.c_str());
-    //     break;
-    // case '-':
-    //     val = atof(B.c_str()) - atof(C.c_str());
-    //     break;
-    // case '*':
-    //     val = atof(B.c_str()) * atof(C.c_str());
-    //     break;
-    // case '/':
-    //     val = atof(B.c_str()) / atof(C.c_str());
-    //     break;
-    // }
-    QString p = QString::number(val);
-    return p;//返回计算值
+
+    return QString::number(val);;//返回计算值
 }

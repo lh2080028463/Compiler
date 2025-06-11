@@ -10,7 +10,11 @@
 
 extern QVector <QString> Tokens;
 extern QString input_s;
-
+// 界符集合
+const QVector<QChar> other = {
+    '-','/','(',')','=','<','+','*','>','=',',',';',
+    '{','}','\'','\"','&','|','[',']','!','\n',' ','#'
+};
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)
@@ -46,42 +50,64 @@ MainWindow::MainWindow(QWidget *parent)
         input_s = ui->textEdit->toPlainText();
         input_s+="#";
 
-        SynAna s;
-
-        //初始化符号表及错误信息
-        extern QVector<QString>synbl_out;
-        extern QVector<QString>typel_out;
-        extern QVector<QString>pfinfl_out;
-        extern QVector<QString>vall_out;
-        extern QString err_inf;
-        synbl_out.clear();
-        typel_out.clear();
-        pfinfl_out.clear();
-        vall_out.clear();
-        err_inf.clear();
-
-        nextflag=s.AN(input_s);
-        if (nextflag)
-        {
-            Quat_result op;
-            op.opti.run();
-            ObjectCode objCode;
-            objCode.clear();
-            objCode.scan();
+        int LENGTH=input_s.length();
+        nextflag=1;
+        for(int i=0;i<LENGTH;i++){
+            if((input_s[i]>='a'&&input_s<='z')||(input_s[i]>='A'&&input_s[i]<='Z'))continue;
+            if(input_s[i]>='0'&&input_s[i]<='9')continue;
+            int failflag=1;
+            for(int j=0;j<other.size();j++){
+                if(input_s[i]==other[j]){
+                    failflag=0;
+                    break;
+                }
+            }
+            if(failflag){
+                nextflag=0;
+                break;
+            }
         }
-        else
-        {   // 弹出错误信息对话框
+        if(nextflag==0){//含非法字符
             QMessageBox::critical(
                 this,
                 "错误信息",
-                err_inf
+                "输入非法字符"
                 );
         }
+        else{
+            SynAna s;
 
-        print(Tokens,ui->textBrowser);
+            //初始化符号表及错误信息
+            extern QVector<QString>synbl_out;
+            extern QVector<QString>typel_out;
+            extern QVector<QString>pfinfl_out;
+            extern QVector<QString>vall_out;
+            extern QString err_inf;
+            synbl_out.clear();
+            typel_out.clear();
+            pfinfl_out.clear();
+            vall_out.clear();
+            err_inf.clear();
 
-
-
+            nextflag=s.AN(input_s);
+            if (nextflag)
+            {
+                Quat_result op;
+                op.opti.run();
+                ObjectCode objCode;
+                objCode.clear();
+                objCode.scan();
+            }
+            else
+            {   // 弹出错误信息对话框
+                QMessageBox::critical(
+                    this,
+                    "错误信息",
+                    err_inf
+                    );
+            }
+            print(Tokens,ui->textBrowser);
+        }
     });
     connect(ui->nextButton,&QPushButton::clicked,[=](){//下一步
         if(!input_s.length()){
