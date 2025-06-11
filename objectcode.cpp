@@ -483,7 +483,7 @@ void ObjectCode::scan()
     while (!in.atEnd()) {
         QString tem = in.readLine().trimmed();
         if (!tem.isEmpty()) {
-            str += tem + "$";
+            str += tem.mid(0,1) + "$"+tem.mid(2)+"$";
         }
     }
     inFile.close();
