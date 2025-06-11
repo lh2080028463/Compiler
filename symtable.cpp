@@ -18,6 +18,7 @@ void symtable::setSYN(){
     extern QVector<QString>synbl_out;
     ui->SYNBL->setRowCount(synbl_out.size()/4);
     ui->SYNBL->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->SYNBL->verticalHeader()->hide();
     for(int i=0;i<synbl_out.size();i+=4){
         int row=i/4;
         QTableWidgetItem*temp1=new QTableWidgetItem(QString::number(row));
@@ -37,6 +38,7 @@ void symtable::setTYP(){
     extern QVector<QString>typel_out;
     ui->TAPEL->setRowCount(typel_out.size()/2);
     ui->TAPEL->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->TAPEL->verticalHeader()->hide();
     for(int i=0;i<typel_out.size();i+=2){
         int row=i/2;
         QTableWidgetItem*temp1=new QTableWidgetItem(QString::number(row));
@@ -52,7 +54,8 @@ void symtable::setPFI(){
     extern QVector<QString>pfinfl_out;
     ui->PFINFL->setRowCount(pfinfl_out.size()/4);
     ui->PFINFL->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    for(int i=0;i<pfinfl_out.size();i++){
+    ui->PFINFL->verticalHeader()->hide();
+    for(int i=0;i<pfinfl_out.size();i+=4){
         int row=i/4;
         QTableWidgetItem*temp1=new QTableWidgetItem(QString::number(row));
         QTableWidgetItem*temp2=new QTableWidgetItem(pfinfl_out[i]);
@@ -72,6 +75,7 @@ void symtable::setVAL(){
     int SIZE=vall_out.size();
     ui->VALL->setRowCount(SIZE);
     ui->VALL->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->VALL->verticalHeader()->hide();
     for(int i=0;i<vall_out.size();i++){
         QTableWidgetItem*temp1=new QTableWidgetItem(QString::number(SIZE-1-i));
         QTableWidgetItem*temp2=new QTableWidgetItem(vall_out[i]);

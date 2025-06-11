@@ -158,8 +158,7 @@ void ObjectCode::fillObj()//写目标代码
         {
             if (RDL::R == "0")//寄存器空
             {
-                QString s;
-                s = "lab" + QString::number(count - 1) + " LD R," + choose(*it, 1, 0);
+                QString s = QString::number(count - 1) + " LD R," + choose(*it, 1, 0);
                 Object.push_back(s);
                 count++;
             }
@@ -167,7 +166,7 @@ void ObjectCode::fillObj()//写目标代码
             {
                 if (choose(*it, 1, 1) == "y")//活跃的必须ST
                 {
-                    QString s = "lab" + QString::number(count - 1) + " ST R," + choose(*it, 1, 0);
+                    QString s = QString::number(count - 1) + " ST R," + choose(*it, 1, 0);
                     Object.push_back(s);
                     count++;
                 }
@@ -176,16 +175,16 @@ void ObjectCode::fillObj()//写目标代码
             {//寄存器不是操作数，是结果数
                 if (RDL::active == "y")
                 {
-                    QString s_1 = "lab" + QString::number(count - 1) + " ST R," + RDL::R;
+                    QString s_1 = QString::number(count - 1) + " ST R," + RDL::R;
                     Object.push_back(s_1);
                     count++;
-                    QString s_2 = "lab" + QString::number(count - 1) + " LD R," + choose(*it, 1, 0);
+                    QString s_2 = QString::number(count - 1) + " LD R," + choose(*it, 1, 0);
                     Object.push_back(s_2);
                     count++;
                 }
                 else
                 {
-                    QString s = "lab" + QString::number(count - 1) + " LD R," + choose(*it, 1, 0);
+                    QString s = QString::number(count - 1) + " LD R," + choose(*it, 1, 0);
                     Object.push_back(s);
                     count++;
                 }
@@ -197,10 +196,10 @@ void ObjectCode::fillObj()//写目标代码
         {//是加减等语句
             if (RDL::R == "0")//寄存器空
             {
-                QString s_1 = "lab" + QString::number(count - 1) + " " + "LD R," + choose(*it, 1, 0);
+                QString s_1 = QString::number(count - 1) + " " + "LD R," + choose(*it, 1, 0);
                 Object.push_back(s_1);
                 count++;
-                QString s_2 = "lab" + QString::number(count - 1) + " " + Operate[choose(*it, 0, 0)][1] + " R," + choose(*it, 2, 0);
+                QString s_2 = QString::number(count - 1) + " " + Operate[choose(*it, 0, 0)][1] + " R," + choose(*it, 2, 0);
                 Object.push_back(s_2);
                 count++;
             }
@@ -208,16 +207,16 @@ void ObjectCode::fillObj()//写目标代码
             {
                 if (choose(*it, 1, 1) == "y")//活跃必须保存
                 {
-                    QString s_1 = "lab" + QString::number(count - 1) + " " + "ST R," + choose(*it, 1, 0);
+                    QString s_1 = QString::number(count - 1) + " " + "ST R," + choose(*it, 1, 0);
                     Object.push_back(s_1);
                     count++;
-                    QString s_2 = "lab" + QString::number(count - 1) + " " + Operate[choose(*it, 0, 0)][1] + " R," + choose(*it, 2, 0);
+                    QString s_2 = QString::number(count - 1) + " " + Operate[choose(*it, 0, 0)][1] + " R," + choose(*it, 2, 0);
                     Object.push_back(s_2);
                     count++;
                 }
                 else
                 {
-                    QString s = "lab" + QString::number(count - 1) + " " + Operate[choose(*it, 0, 0)][1] + " R," + choose(*it, 2, 0);
+                    QString s = QString::number(count - 1) + " " + Operate[choose(*it, 0, 0)][1] + " R," + choose(*it, 2, 0);
                     Object.push_back(s);
                     count++;
                 }
@@ -226,16 +225,16 @@ void ObjectCode::fillObj()//写目标代码
             {//是第二个操作数，而且可交换
                 if (choose(*it, 2, 1) == "y")//活跃
                 {
-                    QString s_1 = "lab" + QString::number(count - 1) + " " + "ST R," + choose(*it, 2, 0);
+                    QString s_1 = QString::number(count - 1) + " " + "ST R," + choose(*it, 2, 0);
                     Object.push_back(s_1);
                     count++;
-                    QString s_2 = "lab" + QString::number(count - 1) + " " + Operate[choose(*it, 0, 0)][1] + " R," + choose(*it, 1, 0);
+                    QString s_2 = QString::number(count - 1) + " " + Operate[choose(*it, 0, 0)][1] + " R," + choose(*it, 1, 0);
                     Object.push_back(s_2);
                     count++;
                 }
                 else
                 {
-                    QString s = "lab" + QString::number(count - 1) + " " + Operate[choose(*it, 0, 0)][1] + " R," + choose(*it, 1, 0);
+                    QString s = QString::number(count - 1) + " " + Operate[choose(*it, 0, 0)][1] + " R," + choose(*it, 1, 0);
                     Object.push_back(s);
                     count++;
                 }
@@ -244,22 +243,22 @@ void ObjectCode::fillObj()//写目标代码
             {
                 if (RDL::active == "y")
                 {
-                    QString s_1 = "lab" + QString::number(count - 1) + " " + "ST R," + RDL::R;
+                    QString s_1 = QString::number(count - 1) + " " + "ST R," + RDL::R;
                     Object.push_back(s_1);
                     count++;
-                    QString s_2 = "lab" + QString::number(count - 1) + " " + "LD R," + choose(*it, 1, 0);
+                    QString s_2 = QString::number(count - 1) + " " + "LD R," + choose(*it, 1, 0);
                     Object.push_back(s_2);
                     count++;
-                    QString s_3 = "lab" + QString::number(count - 1) + " " + Operate[choose(*it, 0, 0)][1] + " R," + choose(*it, 2, 0);
+                    QString s_3 = QString::number(count - 1) + " " + Operate[choose(*it, 0, 0)][1] + " R," + choose(*it, 2, 0);
                     Object.push_back(s_3);
                     count++;
                 }
                 else
                 {
-                    QString s_1 = "lab" + QString::number(count - 1) + " " + "LD R," + choose(*it, 1, 0);
+                    QString s_1 = QString::number(count - 1) + " " + "LD R," + choose(*it, 1, 0);
                     Object.push_back(s_1);
                     count++;
-                    QString s_2 = "lab" + QString::number(count - 1) + " " + Operate[choose(*it, 0, 0)][1] + " R," + choose(*it, 2, 0);
+                    QString s_2 = QString::number(count - 1) + " " + Operate[choose(*it, 0, 0)][1] + " R," + choose(*it, 2, 0);
                     Object.push_back(s_2);
                     count++;
                 }
@@ -272,10 +271,10 @@ void ObjectCode::fillObj()//写目标代码
         {
             if (RDL::R == "0")
             {
-                QString s_1 = "lab" + QString::number(count - 1) + " " + "LD R," + choose(*it, 1, 0);
+                QString s_1 = QString::number(count - 1) + " " + "LD R," + choose(*it, 1, 0);
                 Object.push_back(s_1);
                 count++;
-                QString s_2 = "lab" + QString::number(count - 1) + " " + "FJ R,";
+                QString s_2 = QString::number(count - 1) + " " + "FJ R,";
                 Object.push_back(s_2);
                 count++;
                 SEM.push(count - 1);
@@ -284,16 +283,16 @@ void ObjectCode::fillObj()//写目标代码
             {
                 if (choose(*it, 1, 1) == "y")
                 {
-                    QString s_1 = "lab" + QString::number(count - 1) + " " + "ST R," + choose(*it, 1, 0);
+                    QString s_1 = QString::number(count - 1) + " " + "ST R," + choose(*it, 1, 0);
                     Object.push_back(s_1);
                     count++;
-                    QString s_2 = "lab" + QString::number(count - 1) + " " + "FJ R,";
+                    QString s_2 = QString::number(count - 1) + " " + "FJ R,";
                     Object.push_back(s_2);
                     count++;
                 }
                 else
                 {
-                    QString s = "lab" + QString::number(count - 1) + " " + "FJ R,";
+                    QString s =  QString::number(count - 1) + " " + "FJ R,";
                     Object.push_back(s);
                     count++;
                 }
@@ -305,22 +304,22 @@ void ObjectCode::fillObj()//写目标代码
             {
                 if (RDL::active == "y")
                 {
-                    QString s_1 = "lab" + QString::number(count - 1) + " " + "ST R," + RDL::R;
+                    QString s_1 =   QString::number(count - 1) + " " + "ST R," + RDL::R;
                     Object.push_back(s_1);
                     count++;
-                    QString s_2 = "lab" + QString::number(count - 1) + " " + "LD R," + choose(*it, 1, 0);
+                    QString s_2 =   QString::number(count - 1) + " " + "LD R," + choose(*it, 1, 0);
                     Object.push_back(s_2);
                     count++;
-                    QString s_3 = "lab" + QString::number(count - 1) + " " + "FJ R,";
+                    QString s_3 =   QString::number(count - 1) + " " + "FJ R,";
                     Object.push_back(s_3);
                     count++;
                 }
                 else
                 {
-                    QString s_1 = "lab" + QString::number(count - 1) + " " + "LD R," + choose(*it, 1, 0);
+                    QString s_1 =   QString::number(count - 1) + " " + "LD R," + choose(*it, 1, 0);
                     Object.push_back(s_1);
                     count++;
-                    QString s_2 = "lab" + QString::number(count - 1) + " " + "FJ R,";
+                    QString s_2 =   QString::number(count - 1) + " " + "FJ R,";
                     Object.push_back(s_2);
                     count++;
                 }
@@ -333,14 +332,14 @@ void ObjectCode::fillObj()//写目标代码
         {
             if (RDL::active == "y")
             {
-                QString s = "lab" + QString::number(count - 1) + " " + "ST R," + RDL::R;
+                QString s =   QString::number(count - 1) + " " + "ST R," + RDL::R;
                 Object.push_back(s);
                 count++;
             }
-            QString s_1 = "lab" + QString::number(count + 1);
+            QString s_1 =   QString::number(count + 1);
             Object[SEM.top() - 1] = Object[SEM.top() - 1] + s_1;
             SEM.pop();
-            QString s_2 = "lab" + QString::number(count - 1) + " " + "JMP ";
+            QString s_2 =   QString::number(count - 1) + " " + "JMP ";
             Object.push_back(s_2);
             count++;
             SEM.push(count - 1);
@@ -349,11 +348,11 @@ void ObjectCode::fillObj()//写目标代码
         {
             if (RDL::active == "y")
             {
-                QString s = "lab" + QString::number(count - 1) + " " + "ST R," + RDL::R;
+                QString s =   QString::number(count - 1) + " " + "ST R," + RDL::R;
                 Object.push_back(s);
                 count++;
             }
-            QString s = "lab" + QString::number(count - 1);
+            QString s =   QString::number(count - 1);
             Object[SEM.top() - 1] = Object[SEM.top() - 1] + s;
             SEM.pop();
         }
@@ -365,10 +364,10 @@ void ObjectCode::fillObj()//写目标代码
         {
             if (RDL::R == "0")
             {
-                QString s_1 = "lab" + QString::number(count - 1) + " " + "LD R," + choose(*it, 1, 0);
+                QString s_1 =   QString::number(count - 1) + " " + "LD R," + choose(*it, 1, 0);
                 Object.push_back(s_1);
                 count++;
-                QString s_2 = "lab" + QString::number(count - 1) + " " + "FJ R,";
+                QString s_2 =   QString::number(count - 1) + " " + "FJ R,";
                 Object.push_back(s_2);
                 count++;
                 SEM.push(count - 1);
@@ -377,16 +376,16 @@ void ObjectCode::fillObj()//写目标代码
             {
                 if (choose(*it, 1, 1) == "y")
                 {
-                    QString s_1 = "lab" + QString::number(count - 1) + " " + "ST R," + choose(*it, 1, 0);
+                    QString s_1 =   QString::number(count - 1) + " " + "ST R," + choose(*it, 1, 0);
                     Object.push_back(s_1);
                     count++;
-                    QString s_2 = "lab" + QString::number(count - 1) + " " + "FJ R,";
+                    QString s_2 =   QString::number(count - 1) + " " + "FJ R,";
                     Object.push_back(s_2);
                     count++;
                 }
                 else
                 {
-                    QString s = "lab" + QString::number(count - 1) + " " + "FJ R,";
+                    QString s =   QString::number(count - 1) + " " + "FJ R,";
                     Object.push_back(s);
                     count++;
                 }
@@ -398,22 +397,22 @@ void ObjectCode::fillObj()//写目标代码
             {
                 if (RDL::active == "y")
                 {
-                    QString s_1 = "lab" + QString::number(count - 1) + " " + "ST R," + RDL::R;
+                    QString s_1 =   QString::number(count - 1) + " " + "ST R," + RDL::R;
                     Object.push_back(s_1);
                     count++;
-                    QString s_2 = "lab" + QString::number(count - 1) + " " + "LD R," + choose(*it, 1, 0);
+                    QString s_2 =   QString::number(count - 1) + " " + "LD R," + choose(*it, 1, 0);
                     Object.push_back(s_2);
                     count++;
-                    QString s_3 = "lab" + QString::number(count - 1) + " " + "FJ R,";
+                    QString s_3 =   QString::number(count - 1) + " " + "FJ R,";
                     Object.push_back(s_3);
                     count++;
                 }
                 else
                 {
-                    QString s_1 = "lab" + QString::number(count - 1) + " " + "LD R," + choose(*it, 1, 0);
+                    QString s_1 =   QString::number(count - 1) + " " + "LD R," + choose(*it, 1, 0);
                     Object.push_back(s_1);
                     count++;
-                    QString s_2 = "lab" + QString::number(count - 1) + " " + "FJ R,";
+                    QString s_2 =   QString::number(count - 1) + " " + "FJ R,";
                     Object.push_back(s_2);
                     count++;
                 }
@@ -426,16 +425,16 @@ void ObjectCode::fillObj()//写目标代码
         {
             if (RDL::active == "y")
             {
-                QString s = "lab" + QString::number(count - 1) + " " + "ST R," + RDL::R;
+                QString s =   QString::number(count - 1) + " " + "ST R," + RDL::R;
                 Object.push_back(s);
                 count++;
             }
             RDL::R = "0";
             RDL::active = "0";
-            QString s_1 = "lab" + QString::number(count);
+            QString s_1 =   QString::number(count);
             Object[SEM.top() - 1] = Object[SEM.top() - 1] + s_1;
             SEM.pop();
-            QString s_2 = "lab" + QString::number(count - 1) + " " + "JMP lab" + QString::number(SEM.top());
+            QString s_2 =   QString::number(count - 1) + " " + "JMP lab" + QString::number(SEM.top());
             Object.push_back(s_2);
             count++;
             SEM.pop();
@@ -451,7 +450,7 @@ void ObjectCode::fillObj()//写目标代码
         }
         else if (choose(*it, 0, 0) == "ret")
         {
-            QString s = "lab" + QString::number(count - 1) + " LD R," + choose(*it, 1, 0);
+            QString s =  QString::number(count - 1) + " LD R," + choose(*it, 1, 0);
             Object.push_back(s);
             count++;
             RDL::R = choose(*it, 1, 0);

@@ -7,6 +7,7 @@ QVector<QString>synbl_out;
 QVector<QString>typel_out;
 QVector<QString>pfinfl_out;
 QVector<QString>vall_out;
+QString err_inf;
 
 int main(int argc, char *argv[])
 {

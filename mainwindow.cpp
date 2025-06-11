@@ -53,20 +53,29 @@ MainWindow::MainWindow(QWidget *parent)
         extern QVector<QString>typel_out;
         extern QVector<QString>pfinfl_out;
         extern QVector<QString>vall_out;
+        extern QString err_inf;
         synbl_out.clear();
         typel_out.clear();
         pfinfl_out.clear();
         vall_out.clear();
-        nextflag=0;
+        err_inf.clear();
 
-        if (s.AN(input_s))
+        nextflag=s.AN(input_s);
+        if (nextflag)
         {
             Quat_result op;
             op.opti.run();
             ObjectCode objCode;
             objCode.clear();
             objCode.scan();
-            nextflag=1;
+        }
+        else
+        {   // 弹出基础信息框
+            QMessageBox::critical(
+                this,
+                "错误信息",
+                err_inf
+                );
         }
 
         print(Tokens,ui->textBrowser);
@@ -96,10 +105,3 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
-
-// void MainWindow::resizeEvent(QResizeEvent *event)
-// {
-//     QMainWindow::resizeEvent(event);
-//     // 调整视图大小
-//     view->setGeometry(0, 0, this->width(), this->height());
-// }

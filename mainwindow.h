@@ -10,6 +10,7 @@
 
 #include"optimize.h"
 #include"objectcode.h"
+#include <QtWidgets/QMessageBox>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -28,7 +29,7 @@ public:
     //void resizeEvent(QResizeEvent *event) override;  // 添加这行声明
 
     Switch* window2=NULL;//选择界面实例化对象
-    int nextflag=0;
+    bool nextflag=false;
 
 private:
     Ui::MainWindow *ui;

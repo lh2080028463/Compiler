@@ -14,6 +14,7 @@ QVector<QVector<QString>> grammarRight;  //grammar按序号存储所有产生式
 
 bool SynAna::AN(QString program)
 {
+    extern QString err_inf;
     VNQList.clear(); VTQList.clear();
     LL1Table.clear();
     grammarRight.clear();
@@ -54,6 +55,8 @@ bool SynAna::AN(QString program)
             {
                 qDebug()<<"语法错误！请检查！";
                 qDebug() << "错误信息：" + nowWord.value;
+                err_inf+="语法错误！请检查！\n错误信息：";
+                err_inf+=nowWord.value;
                 return false;
             }
         }
@@ -71,6 +74,8 @@ bool SynAna::AN(QString program)
             {
                 qDebug() << "语法错误！请检查！" ;
                 qDebug() << "错误信息：" + nowWord.value;
+                err_inf+="语法错误！请检查！\n错误信息：";
+                err_inf+=nowWord.value;
                 return false;
             }
             else
@@ -102,6 +107,7 @@ bool SynAna::AN(QString program)
             {
                 qDebug() << "语法错误！请检查！" ;
                 qDebug() << "错误信息：已读取所有源码，语法分析器未成功结束！" ;
+                err_inf+="语法错误！请检查！\n错误信息：已读取所有源码，语法分析器未成功结束！";
                 return false;
                 //exit(1);
             }
@@ -110,6 +116,7 @@ bool SynAna::AN(QString program)
         {
             qDebug() << "语法错误！请检查！" ;
             qDebug() << "错误信息：未知错误！" ;
+            err_inf+="语法错误！请检查！\n错误信息：未知错误！";
             qDebug() << topSymbol ;
             return false;
             //exit(1);
