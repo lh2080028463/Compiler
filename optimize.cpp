@@ -86,13 +86,13 @@ void optimize::cleardag(){//清空dag
     for (int i = 0; i < dag.num; i++){
         dag.node[i].id = 0;
         dag.node[i].left = 0;
-        dag.node[i].m_sign.name = "";
-        dag.node[i].m_sign.type = "";
-        dag.node[i].op = "";
+        dag.node[i].m_sign.name.clear();
+        dag.node[i].m_sign.type.clear();
+        dag.node[i].op.clear();
         dag.node[i].right = 0;
         for (int j = 0; j < LEN; j++){
-            dag.node[i].sign[j].name = "";
-            dag.node[i].sign[j].type = "";
+            dag.node[i].sign[j].name.clear();
+            dag.node[i].sign[j].type.clear();
         }
     }
     dag.num = 0;
@@ -101,17 +101,17 @@ void optimize::cleardag(){//清空dag
 void optimize::addsign(int n, QString A, QString typ){//将A标记添加至n节点上，并删除无用标记
     int k;
     k = getid(A);//记录A在DAG中的节点标识
-    if (k != 0){//如果getnode(A)不为空
+    if (k){//如果getnode(A)不为空
         for (int j = 0; j < LEN; j++){//在节点getnode(A)上删除附标记
             if (dag.node[k - 1].sign[j].name == A){//若A是附加标记则删除
-                dag.node[k - 1].sign[j].name = "";
-                dag.node[k - 1].sign[j].type = "";
+                dag.node[k - 1].sign[j].name.clear();
+                dag.node[k - 1].sign[j].type.clear();
             }
         }
     }
     if (dag.node[n - 1].m_sign.name != ""){//主标记名字不为空，把A添加到附加标记中
         for (int j = 0; j < LEN; j++){//在节点n上添加附标记
-            if (dag.node[n - 1].sign[j].name == ""){
+            if (!dag.node[n - 1].sign[j].name.length()){
                 dag.node[n - 1].sign[j].name = A;
                 dag.node[n - 1].sign[j].type = typ;
                 break;
@@ -316,20 +316,20 @@ void optimize::optqua(int block_num, std::fstream& File){//优化四元式
 }
 
 int optimize::getid(QString B){//获取标记为B的节点的id
-    int n = 0;      //节点id
-    for (int i = 0; i < dag.num; i++){//遍历所有节点
+    int pos = 0;//id初始化为0
+    for (int i = 0; i < dag.num; i++){
         if (dag.node[i].m_sign.name == B)//在主节点中找到
-            n = i + 1;//返回结点数字（该节点数字从1开始计数，因而返回i+1
+            pos = i + 1;//返回结点id（该节点数字从1开始计数，因而返回i+1
         for (int j = 0; j < LEN; j++){
             if (dag.node[i].sign[j].name == B)//在附加结点中找到
-                n = i + 1;
+                pos = i + 1;
         }
     }
-    return n;
+    return pos;
 }
 
 int optimize::findnode(QString opl, QString B, QString C){//在DAG中查找有无符合A=B op C的节点
-    int n = 0;
+    int pos = 0;
     int l, r, k = 0;
     l = getid(B);//获取B节点的id
     r = getid(C);//获取C节点的id
@@ -349,13 +349,13 @@ int optimize::findnode(QString opl, QString B, QString C){//在DAG中查找有�
                         k = 1;
                 }
                 if ((dag.node[r - 1].m_sign.name == C) || k == 1){//C满足
-                    n = i + 1;
+                    pos = i + 1;
                     break;//跳出循环
                 }
             }
         }
     }
-    return n;//返回找到的节点标号
+    return pos;//返回找到的节点标号
 }
 
 int optimize::makenode(QString opl, QString B, QString C){//构造中间节点
