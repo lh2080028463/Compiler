@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>1080</width>
+    <height>800</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,11 +17,17 @@
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>50</y>
-      <width>61</width>
-      <height>16</height>
+      <x>220</x>
+      <y>60</y>
+      <width>81</width>
+      <height>21</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>仿宋</family>
+      <pointsize>16</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>First集</string>
@@ -30,11 +36,17 @@
    <widget class="QLabel" name="label_2">
     <property name="geometry">
      <rect>
-      <x>300</x>
-      <y>50</y>
+      <x>510</x>
+      <y>60</y>
       <width>81</width>
-      <height>16</height>
+      <height>21</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>仿宋</family>
+      <pointsize>16</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>Follow集</string>
@@ -43,8 +55,8 @@
    <widget class="QPushButton" name="quitButton">
     <property name="geometry">
      <rect>
-      <x>360</x>
-      <y>480</y>
+      <x>530</x>
+      <y>680</y>
       <width>81</width>
       <height>31</height>
      </rect>
@@ -53,35 +65,48 @@
      <string>返回</string>
     </property>
    </widget>
-   <widget class="QTextBrowser" name="textBrowser">
+   <widget class="QLabel" name="label_3">
     <property name="geometry">
      <rect>
-      <x>0</x>
-      <y>80</y>
-      <width>256</width>
-      <height>371</height>
+      <x>810</x>
+      <y>60</y>
+      <width>81</width>
+      <height>21</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>仿宋</family>
+      <pointsize>16</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Select集</string>
     </property>
    </widget>
-   <widget class="QTextBrowser" name="textBrowser_2">
+   <widget class="QWidget" name="">
     <property name="geometry">
      <rect>
-      <x>260</x>
-      <y>80</y>
-      <width>256</width>
-      <height>371</height>
+      <x>127</x>
+      <y>130</y>
+      <width>851</width>
+      <height>511</height>
      </rect>
     </property>
-   </widget>
-   <widget class="QTextBrowser" name="textBrowser_3">
-    <property name="geometry">
-     <rect>
-      <x>530</x>
-      <y>80</y>
-      <width>256</width>
-      <height>371</height>
-     </rect>
-    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <property name="spacing">
+      <number>33</number>
+     </property>
+     <item alignment="Qt::AlignmentFlag::AlignHCenter">
+      <widget class="QTextBrowser" name="textBrowser"/>
+     </item>
+     <item alignment="Qt::AlignmentFlag::AlignHCenter">
+      <widget class="QTextBrowser" name="textBrowser_2"/>
+     </item>
+     <item alignment="Qt::AlignmentFlag::AlignHCenter">
+      <widget class="QTextBrowser" name="textBrowser_3"/>
+     </item>
+    </layout>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -89,7 +114,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>1080</width>
      <height>18</height>
     </rect>
    </property>

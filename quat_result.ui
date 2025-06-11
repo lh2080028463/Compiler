@@ -6,9 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>1080</width>
+    <height>800</height>
    </rect>
+  </property>
+  <property name="font">
+   <font>
+    <pointsize>11</pointsize>
+   </font>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
@@ -17,11 +22,16 @@
    <widget class="QLabel" name="label_3">
     <property name="geometry">
      <rect>
-      <x>550</x>
-      <y>60</y>
+      <x>800</x>
+      <y>90</y>
       <width>101</width>
-      <height>16</height>
+      <height>21</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>15</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>目标代码</string>
@@ -30,11 +40,16 @@
    <widget class="QLabel" name="label_2">
     <property name="geometry">
      <rect>
-      <x>280</x>
-      <y>60</y>
+      <x>470</x>
+      <y>90</y>
       <width>101</width>
-      <height>16</height>
+      <height>21</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>15</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>优化后四元式</string>
@@ -43,31 +58,46 @@
    <widget class="QTextBrowser" name="textBrowser_2">
     <property name="geometry">
      <rect>
-      <x>280</x>
-      <y>80</y>
+      <x>400</x>
+      <y>140</y>
       <width>241</width>
-      <height>371</height>
+      <height>441</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+     </font>
     </property>
    </widget>
    <widget class="QTextBrowser" name="textBrowser_3">
     <property name="geometry">
      <rect>
-      <x>550</x>
-      <y>80</y>
+      <x>720</x>
+      <y>140</y>
       <width>241</width>
-      <height>371</height>
+      <height>441</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+     </font>
     </property>
    </widget>
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>60</y>
+      <x>130</x>
+      <y>90</y>
       <width>101</width>
-      <height>16</height>
+      <height>21</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>15</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>优化前四元式</string>
@@ -76,18 +106,23 @@
    <widget class="QTextBrowser" name="textBrowser">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>80</y>
+      <x>90</x>
+      <y>140</y>
       <width>241</width>
-      <height>371</height>
+      <height>441</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+     </font>
     </property>
    </widget>
    <widget class="QPushButton" name="quitButton">
     <property name="geometry">
      <rect>
-      <x>340</x>
-      <y>470</y>
+      <x>450</x>
+      <y>640</y>
       <width>91</width>
       <height>31</height>
      </rect>
@@ -102,8 +137,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
-     <height>18</height>
+     <width>1080</width>
+     <height>20</height>
     </rect>
    </property>
   </widget>
