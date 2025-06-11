@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>1080</width>
+    <height>800</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,21 +17,30 @@
    <widget class="QTextEdit" name="textEdit">
     <property name="geometry">
      <rect>
-      <x>210</x>
-      <y>100</y>
-      <width>381</width>
-      <height>211</height>
+      <x>70</x>
+      <y>60</y>
+      <width>541</width>
+      <height>441</height>
      </rect>
     </property>
    </widget>
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>170</x>
-      <y>70</y>
+      <x>40</x>
+      <y>40</y>
       <width>81</width>
       <height>16</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>楷体</family>
+      <pointsize>15</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(255, 255, 255);</string>
     </property>
     <property name="text">
      <string>输入代码</string>
@@ -40,21 +49,30 @@
    <widget class="QTextBrowser" name="textBrowser">
     <property name="geometry">
      <rect>
-      <x>170</x>
-      <y>350</y>
-      <width>461</width>
-      <height>91</height>
+      <x>70</x>
+      <y>560</y>
+      <width>541</width>
+      <height>151</height>
      </rect>
     </property>
    </widget>
    <widget class="QLabel" name="label_2">
     <property name="geometry">
      <rect>
-      <x>170</x>
-      <y>330</y>
+      <x>30</x>
+      <y>530</y>
       <width>71</width>
       <height>16</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>楷体</family>
+      <pointsize>16</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(248, 248, 248);</string>
     </property>
     <property name="text">
      <string>Token串</string>
@@ -63,11 +81,17 @@
    <widget class="QPushButton" name="inputButton">
     <property name="geometry">
      <rect>
-      <x>640</x>
-      <y>217</y>
-      <width>81</width>
-      <height>21</height>
+      <x>780</x>
+      <y>250</y>
+      <width>111</width>
+      <height>51</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>楷体</family>
+      <pointsize>20</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>确定</string>
@@ -76,11 +100,17 @@
    <widget class="QComboBox" name="comboBox">
     <property name="geometry">
      <rect>
-      <x>630</x>
-      <y>170</y>
-      <width>101</width>
-      <height>22</height>
+      <x>760</x>
+      <y>130</y>
+      <width>151</width>
+      <height>41</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>楷体</family>
+      <pointsize>16</pointsize>
+     </font>
     </property>
     <item>
      <property name="text">
@@ -96,11 +126,17 @@
    <widget class="QPushButton" name="nextButton">
     <property name="geometry">
      <rect>
-      <x>640</x>
-      <y>250</y>
-      <width>81</width>
-      <height>21</height>
+      <x>780</x>
+      <y>390</y>
+      <width>111</width>
+      <height>51</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>楷体</family>
+      <pointsize>20</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>下一步</string>
@@ -111,9 +147,15 @@
      <rect>
       <x>8</x>
       <y>8</y>
-      <width>791</width>
-      <height>561</height>
+      <width>1071</width>
+      <height>781</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>楷体</family>
+      <pointsize>8</pointsize>
+     </font>
     </property>
     <property name="styleSheet">
      <string notr="true"/>
@@ -125,11 +167,17 @@
    <widget class="QPushButton" name="quitButton">
     <property name="geometry">
      <rect>
-      <x>640</x>
-      <y>280</y>
-      <width>81</width>
-      <height>21</height>
+      <x>780</x>
+      <y>570</y>
+      <width>111</width>
+      <height>51</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>楷体</family>
+      <pointsize>20</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>退出</string>
@@ -150,7 +198,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>1080</width>
      <height>18</height>
     </rect>
    </property>
