@@ -35,10 +35,10 @@ QDebug operator<<(QDebug debug, const PFINFLEntry& entry)
 
 QMap<QString, SymbolTable::Act> SymbolTable::ACTIONL =
     {
-        {QStringLiteral("函数名"), &SymbolTable::func},
-        {QStringLiteral("int形参名"), &SymbolTable::formalParaVar},
-        {QStringLiteral("int变量名"), &SymbolTable::locVariable},
-        {QStringLiteral("参数串结束"), &SymbolTable::inputDisp}
+        {QStringLiteral("\"函数名\""), &SymbolTable::func},
+        {QStringLiteral("\"int形参名\""), &SymbolTable::formalParaVar},
+        {QStringLiteral("\"int变量名\""), &SymbolTable::locVariable},
+        {QStringLiteral("\"参数串结束\""), &SymbolTable::inputDisp}
 };
 
 SymbolTable::SymbolTable()
