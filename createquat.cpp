@@ -311,7 +311,7 @@ void createquat::PRINT()//打印四元式表
 
     QTextStream out(&File);
     int qi = 0;
-    while (qi != q)  // 注意：这里q仍然是成员变量，保持原逻辑
+    while (qi != q)
     {
         out << "(" << qi + 1 << ")" << "("
             << qt[qi].op << ", "

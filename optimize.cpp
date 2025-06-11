@@ -21,10 +21,10 @@ void optimize::initquat(){//四元式数组转成结构体，以qt为处理对�
         else
             qua[i].type = 3;//其他
 
-        //操作数1初始化(string)
+        //操作数1初始化
         if ((qt[i].arg1[0] >= 'a' && qt[i].arg1[0] <= 'z') || (qt[i].arg1[0] >= 'A' && qt[i].arg1[0] <= 'Z')){
             if (qt[i].arg1.length()>1&&qt[i].arg1[1] >= '1' && qt[i].arg1[1] <= '9'){//识别t1,t2等标识符
-                qua[i].num1.type = "2";//标为临时变量
+                qua[i].num1.type = "2";//第二位为数字的标为临时变量
             }
             else{//识别其他标识符
                 qua[i].num1.type = "1";//标非临时变量
@@ -369,20 +369,19 @@ int optimize::makenode(QString opl, QString B, QString C){//构造中间节点
 
 int optimize::divide(){//划分基本块
     int i = 0;
-    int num = 1;
-    while (qua[i].op != ""){//当还有未处理的四元式，循环
+    int num = 1;//数目初始化为1
+    for(int i=0;qua[i].op != "";i++){
         if (qua[i].type != 3 || qua[i].op == "lb" || qua[i].op == "wh" || qua[i].op == "fun" || qua[i].op == "ret" || qua[i].op == "endfun")
             qua[i].block = num;//当前语句所在位置即为基本块划分位置
         if (qua[i].op == "if" || qua[i].op == "el" || qua[i].op == "ie" || qua[i].op == "do" || qua[i].op == "we" || qua[i].op == "gt"){
             qua[i].block = num;//当前语句所在位置即为基本块划分位置
-            num++;//基本块加1
+            num++;//块数加1
         }
-        i++;
     }
     //qua[i].op==""
     if (qua[i - 1].op == "if" || qua[i - 1].op == "el" || qua[i - 1].op == "ie" || qua[i - 1].op == "do" || qua[i - 1].op == "we" || qua[i - 1].op == "gt")//结束语句在最后
-        num--;//特殊情况，基本块减1
-    return num;//返回语句数量
+        num--;//特殊情况，块数减1
+    return num;//返回块的数量
 }
 
 QString optimize::calcu(QString opl, QString B, QString C)   //计算两个数运算的值

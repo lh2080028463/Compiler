@@ -15,7 +15,6 @@ ObjectCode::ObjectCode() {}
 using namespace std;
 
 QStack <int> SEM;	//栈
-
 extern QVector<QString> I;    //声明，不是定义
 QVector <QString> Quadruple;		//待处理的四元式序列
 QVector <QString> Object;			//翻译语句
@@ -24,7 +23,6 @@ QMap <QString, QVector<QString>> Operate = { {"+",{"w","add","y"}},{"-",{"w","su
                                        {"/",{"w","div","n"}},{">",{"w","gt","n"}},{"<",{"w","lt","n"}},
                                        {"==",{"w","eq","y"}},{"!=",{"w","ne","y"}},
                                        {">=",{"w","ge","n"}} ,{"<=",{"w","le","n"}} };
-
 int ObjectCode::count = 1;
 QString RDL::R = "0";
 QString RDL::active = "0";
@@ -434,7 +432,7 @@ void ObjectCode::fillObj()//写目标代码
             QString s_1 =   QString::number(count);
             Object[SEM.top() - 1] = Object[SEM.top() - 1] + s_1;
             SEM.pop();
-            QString s_2 =   QString::number(count - 1) + " " + "JMP lab" + QString::number(SEM.top());
+            QString s_2 =   QString::number(count - 1) + " " + "JMP " + QString::number(SEM.top());
             Object.push_back(s_2);
             count++;
             SEM.pop();
