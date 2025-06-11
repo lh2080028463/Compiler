@@ -2,7 +2,8 @@
 #define GRAANA_RESULT_H
 
 #include <QMainWindow>
-
+#include<QLabel>
+#include<QMovie>
 
 namespace Ui {
 class GraAna_result;
@@ -22,6 +23,8 @@ signals:
 
 private:
     Ui::GraAna_result *ui;
+    QMovie *piggyMovie;
+    QLabel *piggyLabel;
 };
 
 #endif // GRAANA_RESULT_H

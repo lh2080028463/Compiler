@@ -12,6 +12,13 @@ Quat_result::Quat_result(QWidget *parent)
     ui->setupUi(this);
     this->setFixedSize(this->geometry().size());
 
+    // 加载GIF文件
+    piggyMovie = new QMovie(":/images/piggy.gif"); // 使用资源文件路径
+    ui->label_movie->setMovie(piggyMovie);
+    piggyMovie->setScaledSize(this->size());
+    //开始播放GIF
+    piggyMovie->start();
+
     //返回switch窗口
     connect(ui->quitButton,&QPushButton::clicked,[=](){
         emit this->back();

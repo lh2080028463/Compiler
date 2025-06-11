@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 #include<QTableWidgetItem>
+#include<QLabel>
+#include<QMovie>
 
 namespace Ui {
 class symtable;
@@ -26,6 +28,8 @@ signals:
 
 private:
     Ui::symtable *ui;
+    QMovie *piggyMovie;
+    QLabel *piggyLabel;
 };
 
 #endif // SYMTABLE_H
