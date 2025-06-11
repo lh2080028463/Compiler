@@ -25,8 +25,14 @@
     </property>
     <property name="font">
      <font>
+      <family>Consolas</family>
       <pointsize>14</pointsize>
+      <italic>false</italic>
+      <bold>false</bold>
      </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font: 14pt &quot;Consolas&quot;;</string>
     </property>
    </widget>
    <widget class="QLabel" name="label">
@@ -62,8 +68,14 @@
     </property>
     <property name="font">
      <font>
+      <family>Consolas</family>
       <pointsize>14</pointsize>
+      <italic>false</italic>
+      <bold>false</bold>
      </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font: 14pt &quot;Consolas&quot;;</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_2">

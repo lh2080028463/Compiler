@@ -6,6 +6,9 @@
 #include"quat_result.h"
 #include"graana_result.h"
 #include"symtable.h"
+#include<QMovie>
+#include<QLabel>
+#include<QMessageBox>
 
 namespace Ui {
 class Switch;
@@ -28,6 +31,8 @@ signals:
 
 private:
     Ui::Switch *ui;
+    QMovie *piggyMovie;
+    QLabel *piggyLabel;
 };
 
 #endif // SWITCH_H

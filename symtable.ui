@@ -42,9 +42,9 @@
    <widget class="QTableWidget" name="PFINFL">
     <property name="geometry">
      <rect>
-      <x>40</x>
+      <x>30</x>
       <y>440</y>
-      <width>501</width>
+      <width>511</width>
       <height>191</height>
      </rect>
     </property>
@@ -112,9 +112,9 @@
    <widget class="QTableWidget" name="SYNBL">
     <property name="geometry">
      <rect>
-      <x>40</x>
+      <x>30</x>
       <y>90</y>
-      <width>501</width>
+      <width>511</width>
       <height>161</height>
      </rect>
     </property>
@@ -262,6 +262,29 @@ li.checked::marker { content: &quot;\2612&quot;; }
 &lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;活动记录表&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
+   <widget class="QLabel" name="label_3">
+    <property name="geometry">
+     <rect>
+      <x>-1</x>
+      <y>1</y>
+      <width>1021</width>
+      <height>781</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
+   </widget>
+   <zorder>label_3</zorder>
+   <zorder>VALL</zorder>
+   <zorder>PFINFL</zorder>
+   <zorder>TAPEL</zorder>
+   <zorder>SYNBL</zorder>
+   <zorder>quitButton</zorder>
+   <zorder>textBrowser</zorder>
+   <zorder>textBrowser_2</zorder>
+   <zorder>textBrowser_3</zorder>
+   <zorder>textBrowser_4</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

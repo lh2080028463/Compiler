@@ -101,7 +101,7 @@ void optimize::cleardag(){//清空dag
 void optimize::addsign(int n, QString A, QString typ){//将A标记添加至n节点上，并删除无用标记
     int k;
     k = getid(A);//记录A在DAG中的节点标识
-    if (k){//如果getnode(A)不为空
+    if (k){
         for (int j = 0; j < LEN; j++){//在节点getnode(A)上删除附标记
             if (dag.node[k - 1].sign[j].name == A){//若A是附加标记则删除
                 dag.node[k - 1].sign[j].name.clear();
@@ -109,7 +109,7 @@ void optimize::addsign(int n, QString A, QString typ){//将A标记添加至n节�
             }
         }
     }
-    if (dag.node[n - 1].m_sign.name != ""){//主标记名字不为空，把A添加到附加标记中
+    if (dag.node[n - 1].m_sign.name.length()){//主标记名字不为空，把A添加到附加标记中
         for (int j = 0; j < LEN; j++){//在节点n上添加附标记
             if (!dag.node[n - 1].sign[j].name.length()){
                 dag.node[n - 1].sign[j].name = A;

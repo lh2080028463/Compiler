@@ -4,6 +4,8 @@
 #include <QMainWindow>
 #include"createquat.h"
 #include"optimize.h"
+#include<QLabel>
+#include<QMovie>
 
 namespace Ui {
 class Quat_result;
@@ -23,7 +25,8 @@ signals:
 
 private:
     Ui::Quat_result *ui;
-
+    QMovie *piggyMovie;
+    QLabel *piggyLabel;
 };
 
 #endif // QUAT_RESULT_H
