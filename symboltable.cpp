@@ -146,13 +146,6 @@ int SymbolTable::func(Token tk)
         QString addr = QString("PFINFL[%1]").arg(PFINFL.size() - 1);
         SYNBL.append({ tk.value, QStringLiteral("TAPEL[0]"), QStringLiteral("f"), addr });  // 填写符号表总表
     }
-    // if (tk.type == TokenType::I)
-    // {
-    //     VALL.push_back("0");   //填写VALL表参数个数
-    //     PFINFL.push_back({ 0,3,0,"TAPEL[0]" });   //填写函数表
-    //     QString addr = QString("PFINFL[%1]").arg(PFINFL.size() - 1);
-    //     SYNBL.push_back({ tk.value,"TAPEL[0]","f",addr });  //填写符号表总表
-    // }
 
     return 1;
 }

@@ -11,10 +11,10 @@ using namespace std;
 // Token类型
 enum class TokenType {
     K,   // 关键字
-    P,   // 界符 
-    C1,  // 常整数
-    C2,  // 常实数
-    CT,  // 字符常量
+    P,   // 界符
+    // C1,  // 常整数
+    // C2,  // 常实数
+    // CT,  // 字符常量
     ST,
     O,
     I,// 标识符
