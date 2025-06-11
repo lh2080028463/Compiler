@@ -28,9 +28,9 @@ void GraAna_result::show(){
         return;
     }
 
-    QTextStream tool(&first);
-    while (!tool.atEnd()) {
-        QString tem = tool.readLine().trimmed();
+    QTextStream ftool(&first);
+    while (!ftool.atEnd()) {
+        QString tem = ftool.readLine().trimmed();
         if (!tem.isEmpty()) {
             results += tem+"\n";
         }
@@ -39,21 +39,44 @@ void GraAna_result::show(){
     first.close();
 
 
+
+    results.clear();
     //输出follow集
     QFile follow("TextFile/Follow.txt");
-    if (!first.open(QIODevice::ReadOnly | QIODevice::Text)) {
+    if (!follow.open(QIODevice::ReadOnly | QIODevice::Text)) {
         qCritical() << "无法打开文件: TextFile/Follow.txt";
         return;
     }
 
-    QTextStream tool1(&first);
-    while (!tool1.atEnd()) {
-        QString tem = tool1.readLine().trimmed();
+    QTextStream fotool(&follow);
+    while (!fotool.atEnd()) {
+        QString tem = fotool.readLine().trimmed();
         if (!tem.isEmpty()) {
             results += tem+"\n";
         }
     }
     ui->textBrowser_2->setPlainText(results);
+    follow.close();
+
+
+    results.clear();
+    //输出Select集合
+    QFile select("TextFile/SElect.txt");
+    if (!select.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        qCritical() << "无法打开文件: TextFile/Select.txt";
+        return;
+    }
+
+    QTextStream setool(&select);
+    while (!setool.atEnd()) {
+        QString tem = setool.readLine().trimmed();
+        if (!tem.isEmpty()) {
+            results += tem+"\n";
+        }
+    }
+    ui->textBrowser_3->setPlainText(results);
+    select.close();
+
 
 }
 

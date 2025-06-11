@@ -9,7 +9,6 @@ QVector<QString> VTQList;   //终结符列表
 //LL(1)分析表，格式为{"E", {{"i", 1}, {"(", 1}}}
 //"E"为行表头，"i"和"("为列表头，1为该表项内容即对应的产生式序号
 QMap<QString, QMap<QString, int>> LL1Table;
-
 QVector<QVector<QString>> grammarRight;  //grammar按序号存储所有产生式右部
 
 bool SynAna::AN(QString program)
@@ -388,6 +387,28 @@ bool SynAna::GetLL1Table()
     }
     qDebug();
 
+    //输出Follow集到文件
+    QFile file3("TextFile/Follow.txt");
+    if (file3.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        QTextStream out(&file3);
+        out << "Follow集：" << Qt::endl;
+
+        for (auto i = VNQList.begin(); i != VNQList.end(); i++) {
+            out << *i << ": ";
+            for (auto j = FOLLOW[*i].begin(); j != FOLLOW[*i].end(); j++) {
+                out << *j << ' ';
+            }
+            out << '\n';
+        }
+
+        file3.close();
+    } else {
+        // 处理文件打开失败的情况
+        qDebug() << "无法打开文件:" << file3.errorString();
+    }
+
+
+
     // 求Select集
     QVector<QVector<QString>> SELECT(grammar.size());
     for (int i = 0; i < grammar.size(); ++i) {
@@ -406,6 +427,28 @@ bool SynAna::GetLL1Table()
             }
         }
     }
+
+
+    //输出Select集
+    QFile file4("TextFile/Select.txt");
+    if (file4.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        QTextStream out(&file4);
+        out << "Select集：" << Qt::endl;
+
+        int v = 1;
+        for (auto i = SELECT.begin(); i != SELECT.end(); i++) {
+            out << v++ << ": ";
+            for (auto j = i->begin(); j != i->end(); j++) {
+                out << *j << " ";
+            }
+            out << "\n";
+        }
+
+        file4.close();
+    } else {
+        qDebug() << "无法打开Select.txt文件:" << file4.errorString();
+    }
+
 
     qDebug() << "Select集：";
     for(int i=1;i<=SELECT.size();i++){
