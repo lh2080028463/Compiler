@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>1080</width>
+    <height>800</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,10 +17,10 @@
    <widget class="QTextBrowser" name="textBrowser">
     <property name="geometry">
      <rect>
-      <x>220</x>
-      <y>70</y>
+      <x>370</x>
+      <y>200</y>
       <width>361</width>
-      <height>41</height>
+      <height>61</height>
      </rect>
     </property>
     <property name="html">
@@ -37,11 +37,16 @@ li.checked::marker { content: &quot;\2612&quot;; }
    <widget class="QPushButton" name="graButton">
     <property name="geometry">
      <rect>
-      <x>220</x>
-      <y>170</y>
-      <width>101</width>
-      <height>41</height>
+      <x>300</x>
+      <y>320</y>
+      <width>171</width>
+      <height>111</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>16</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>语法分析结果</string>
@@ -50,11 +55,16 @@ li.checked::marker { content: &quot;\2612&quot;; }
    <widget class="QPushButton" name="quatButton">
     <property name="geometry">
      <rect>
-      <x>480</x>
-      <y>170</y>
-      <width>101</width>
-      <height>41</height>
+      <x>630</x>
+      <y>320</y>
+      <width>181</width>
+      <height>111</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>16</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>四元式</string>
@@ -63,11 +73,16 @@ li.checked::marker { content: &quot;\2612&quot;; }
    <widget class="QPushButton" name="symButton">
     <property name="geometry">
      <rect>
-      <x>220</x>
-      <y>260</y>
-      <width>101</width>
-      <height>41</height>
+      <x>300</x>
+      <y>450</y>
+      <width>171</width>
+      <height>111</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>16</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>符号表</string>
@@ -76,8 +91,8 @@ li.checked::marker { content: &quot;\2612&quot;; }
    <widget class="QPushButton" name="pushButton_4">
     <property name="geometry">
      <rect>
-      <x>480</x>
-      <y>260</y>
+      <x>500</x>
+      <y>400</y>
       <width>101</width>
       <height>41</height>
      </rect>
@@ -89,11 +104,16 @@ li.checked::marker { content: &quot;\2612&quot;; }
    <widget class="QPushButton" name="returnButton">
     <property name="geometry">
      <rect>
-      <x>360</x>
-      <y>360</y>
-      <width>81</width>
-      <height>41</height>
+      <x>630</x>
+      <y>450</y>
+      <width>181</width>
+      <height>111</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>16</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>返回</string>
@@ -105,7 +125,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>1080</width>
      <height>18</height>
     </rect>
    </property>
