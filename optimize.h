@@ -20,13 +20,14 @@ public:
     }
 
     struct Token{//Token结构体
-        QString name,type;//名称、种类
+        QString name;//名称
+        QString type;//种类：非临时变量为1，临时变量为2，数为3，空为空
     };
 
     //四元式
     struct Quaternion{//四元式结构体
         int block;           //基本块标识
-        int type;            //操作符类型 0 1 2 3
+        int type;            //操作符类型 赋值0，运算2，其他3
         QString op;           //操作符
         Token num1;         //操作数1
         Token num2;         //操作数2

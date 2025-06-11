@@ -48,7 +48,7 @@ MainWindow::MainWindow(QWidget *parent)
 
         SynAna s;
 
-        //清空符号表
+        //初始化符号表及错误信息
         extern QVector<QString>synbl_out;
         extern QVector<QString>typel_out;
         extern QVector<QString>pfinfl_out;
@@ -70,7 +70,7 @@ MainWindow::MainWindow(QWidget *parent)
             objCode.scan();
         }
         else
-        {   // 弹出基础信息框
+        {   // 弹出错误信息对话框
             QMessageBox::critical(
                 this,
                 "错误信息",
@@ -84,13 +84,28 @@ MainWindow::MainWindow(QWidget *parent)
 
     });
     connect(ui->nextButton,&QPushButton::clicked,[=](){//下一步
-        if(input_s.length()>1&&nextflag){
+        if(!input_s.length()){
+            QMessageBox::critical(
+                this,
+                "错误信息",
+                "请输入字符串"
+                );
+        }
+        else if(!nextflag){
+            extern QString err_inf;
+            QMessageBox::critical(
+                this,
+                "错误信息",
+                err_inf
+                );
+        }
+        else{//跳转至选择窗口
             this->hide();
             this->window2->show();
         }
     });
 
-    connect(this->window2,&Switch::back,[=](){//从窗口2返回
+    connect(this->window2,&Switch::back,[=](){//从选择窗口返回
         this->window2->hide();
         this->show();
     });
