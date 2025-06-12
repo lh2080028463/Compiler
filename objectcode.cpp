@@ -1,32 +1,54 @@
 #include "objectcode.h"
 
+// ObjectCode 类的默认构造函数，目前为空实现
 ObjectCode::ObjectCode() {}
 
+// 再次包含头文件，可能存在重复包含问题，建议检查头文件保护
 #include "ObjectCode.h"
+// 包含 Qt 字符串类头文件
 #include <QString>
+// 包含 Qt 动态数组类头文件
 #include <QVector>
-
+// 包含 Qt 映射类头文件
 #include <QMap>
+// 包含 Qt 栈类头文件
 #include <QStack>
-
+// 包含 Qt 调试输出类头文件
 #include<QDebug>
+// 包含 Qt 文件操作类头文件
 #include<QFile>
 
+// 使用标准库命名空间，可能会导致命名冲突，建议尽量避免
 using namespace std;
 
+// 定义语义栈，用于存储中间结果或跳转地址等信息
 QStack <int> SEM;	//栈
+// 声明外部变量 I，该变量在其他文件中定义
 extern QVector<QString> I;    //声明，不是定义
-QVector <QString> Quadruple;		//待处理的四元式序列
-QVector <QString> Object;			//翻译语句
-QMap <QString, QChar> Var;			//变量以及活跃信息
+// 待处理的四元式序列，存储中间代码
+QVector <QString> Quadruple;
+// 存储翻译后的目标代码语句
+QVector <QString> Object;
+// 存储变量及其活跃信息，'y' 表示活跃，'n' 表示不活跃
+QMap <QString, QChar> Var;
+// 操作符映射表，存储操作符对应的相关信息，如操作类型、指令名称、是否可交换等
 QMap <QString, QVector<QString>> Operate = { {"+",{"w","add","y"}},{"-",{"w","sub","n"}},{"*",{"w","mul","y"}},
                                        {"/",{"w","div","n"}},{">",{"w","gt","n"}},{"<",{"w","lt","n"}},
                                        {"==",{"w","eq","y"}},{"!=",{"w","ne","y"}},
                                        {">=",{"w","ge","n"}} ,{"<=",{"w","le","n"}} };
+// 初始化 ObjectCode 类的静态成员变量 count，用于记录目标代码的行号
 int ObjectCode::count = 1;
+// 初始化 RDL 类的静态成员变量 R，用于表示寄存器当前存储的变量
 QString RDL::R = "0";
+// 初始化 RDL 类的静态成员变量 active，用于表示寄存器中变量的活跃信息
 QString RDL::active = "0";
 
+/**
+ * @brief 初始化相关数据结构和变量
+ *
+ * 清空语义栈、四元式序列、目标代码序列和变量活跃信息表，
+ * 并重置计数器和寄存器相关信息。
+ */
 void ObjectCode::clear()    //初始化
 {
     while (!SEM.empty()) SEM.pop();  //清空语义栈
@@ -38,6 +60,16 @@ void ObjectCode::clear()    //初始化
     RDL::active = "0";
 }
 
+/**
+ * @brief 检查指定元素是否存在于向量中
+ *
+ * 遍历向量，检查是否存在与指定元素相等的元素。
+ *
+ * @tparam T 元素的类型
+ * @param v 要检查的向量
+ * @param t 要查找的元素
+ * @return 如果存在返回 true，否则返回 false
+ */
 template<typename T>bool ObjectCode::existT(QVector<T> v, T t)
 {
     for (int i = 0; i < (int)v.size(); i++)
@@ -47,6 +79,12 @@ template<typename T>bool ObjectCode::existT(QVector<T> v, T t)
     return false;
 }
 
+/**
+ * @brief 从四元式中提取变量并设置初始活跃信息
+ *
+ * 遍历四元式序列，提取操作数和结果变量，
+ * 标识符变量初始化为活跃状态，临时变量初始化为不活跃状态。
+ */
 void ObjectCode::getVar() //把变量从四元式中提取出来，设置初始的活跃信息，标识符为活跃，临时变量是不活跃的
 {
     QString temp;
@@ -69,6 +107,12 @@ void ObjectCode::getVar() //把变量从四元式中提取出来，设置初始�
     }
 }
 
+/**
+ * @brief 逆序处理四元式，填写所有变量的活跃信息
+ *
+ * 从后往前遍历四元式序列，根据变量的使用情况更新其活跃信息，
+ * 并将活跃信息插入到四元式字符串中。
+ */
 //逆序对四元式操作，填写所有变量的活跃信息
 void ObjectCode::activeinf()
 {
@@ -114,7 +158,17 @@ void ObjectCode::activeinf()
     }
 }
 
-
+/**
+ * @brief 从字符串中提取指定位置的内容
+ *
+ * 根据逗号的位置和 lag 参数提取字符串中的内容，
+ * 若参数不合法或未找到指定位置的逗号，输出错误信息并退出程序。
+ *
+ * @param s 输入的字符串
+ * @param comma 要查找的逗号序号
+ * @param lag 提取模式，0 表示提取逗号后的内容，1 表示提取分隔符后的单个字符
+ * @return 提取的内容
+ */
 QString ObjectCode::choose(const QString &s, int comma, int lag)
 {
     if (comma > 3 || comma < 0) {
@@ -148,6 +202,12 @@ QString ObjectCode::choose(const QString &s, int comma, int lag)
     exit(-1);
 }
 
+/**
+ * @brief 生成目标代码
+ *
+ * 遍历四元式序列，根据四元式的操作类型生成相应的目标代码，
+ * 并考虑寄存器的使用和变量的活跃信息。
+ */
 void ObjectCode::fillObj()//写目标代码
 {
     for (auto it = Quadruple.begin(); it != Quadruple.end(); ++it)
@@ -462,6 +522,12 @@ void ObjectCode::fillObj()//写目标代码
     }
 }
 
+/**
+ * @brief 扫描并处理四元式文件
+ *
+ * 读取四元式文件内容，按语句块分割，对每个语句块提取变量、
+ * 更新活跃信息并生成目标代码，最后调用 print 方法输出目标代码。
+ */
 void ObjectCode::scan()
 {
     QString str = "$";
@@ -521,6 +587,15 @@ void ObjectCode::scan()
 
     print(); // 打印目标代码到文件，并输出在控制台
 }
+
+/**
+ * @brief 将目标代码输出到文件并在控制台打印
+ *
+ * 打开目标文件，将生成的目标代码逐行写入文件，
+ * 同时在控制台输出目标代码，最后输出完成信息。
+ *
+ * @return 操作成功返回 0，失败返回 -1
+ */
 int ObjectCode::print()
 {
     QFile outFile("TextFile/ObjectCode.txt");
@@ -540,6 +615,12 @@ int ObjectCode::print()
     return 0;
 }
 
+/**
+ * @brief 打印变量表信息
+ *
+ * 输出变量表的标题和分隔线，遍历变量表，
+ * 打印每个变量的名称和活跃信息，最后输出变量总数。
+ */
 // 在ObjectCode.cpp中添加如下函数
 void ObjectCode::printVarTable()
 {

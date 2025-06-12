@@ -2,32 +2,49 @@
 #include<QDebug>
 #include<global.h>
 
-// 关键字集合
+// 关键字集合，存储编程语言中的关键字
 const QVector<QString> K = {
     "int","void","while","if","else","return","float","string",
     "char","break","const","do","struct","case","for","default"
 };
 
-// 界符集合
+// 界符集合，存储编程语言中的界符
 const QVector<QString> P = {
     "-","/","(",")","==","<=","<","+","*",">","=",",",";","++",
     "{","}","\'","\"",">=","--","&&","||","<<",">>","[","]","!","!="
 };
 
+// 标识符表，存储程序中出现的标识符
+QVector <QString> I;
+// 常数表，存储程序中出现的常数
+QVector <float> C;
+// 字符或字符串常量表，存储程序中出现的字符和字符串常量
+QVector <QString> S;
+// Token 序列，存储词法分析得到的 Token
+QVector <QString> Tokens;
 
-QVector <QString> I;				//标识符表
-QVector <float> C;                  //常数表
-QVector <QString> S;				//字符或字符串常量表
-QVector <QString> Tokens;			//Token序列
-
+// 可能组成双字符界符的字符集合
 QVector <QChar> Pdouble = { '=','<','+','>','-','&','|','!' };
 
+// WordAna 类的静态成员变量，记录当前扫描的位置
 int WordAna::count = 0;
+// 错误标志，1 表示出现词法分析错误
 int flag = 0;
 
+/**
+ * @brief 跳过字符串中的空白字符
+ *
+ * 从指定位置开始，跳过字符串中的空白字符（空格、换行符、制表符），
+ * 返回跳过的字符数量。
+ *
+ * @param s 待处理的字符串
+ * @param i 起始位置
+ * @return int 跳过的字符数量
+ */
 int WordAna::jmpBlank(QString s, int i)
 {
     int j = 0;
+    // 循环跳过空白字符
     while (s[i] == ' ' || s[i] == '\n' || s[i] == '\t')
     {
         i++;
@@ -36,6 +53,13 @@ int WordAna::jmpBlank(QString s, int i)
     return j;
 }
 
+/**
+ * @brief 清空词法分析器的状态
+ *
+ * 清空标识符表、常数表、Token 序列，并将扫描位置重置为 0。
+ *
+ * @return bool 总是返回 true，表示清空操作成功
+ */
 bool WordAna::clear()
 {
     I.clear();
@@ -45,19 +69,32 @@ bool WordAna::clear()
     return true;
 }
 
+/**
+ * @brief 对输入的字符串进行词法扫描
+ *
+ * 从指定位置开始对输入字符串进行词法扫描，识别不同类型的 Token，
+ * 并将结果存储在 Token 对象中。
+ *
+ * @param s 待扫描的字符串
+ * @param tk 用于存储扫描结果的 Token 对象
+ * @return bool 扫描成功返回 true，出现错误返回 false
+ */
 bool WordAna::scan(QString s, Token& tk)
 {
     int i = count;
     if (flag == 1)
     {
+        // 输出词法分析错误信息并退出程序
         qDebug() << "错误信息：词法分析错误" << Qt::endl;
         exit(0);
     }
     else if (s[i] == ' ' || s[i] == '\n' || s[i] == '\t')
     {
+        // 跳过空白字符
         i += jmpBlank(s, i);
         if (s[i] == '#')
         {
+            // 输出各类表信息
             qDebug() << "Token:";
             //print(Tokens);
             qDebug() << Qt::endl;
@@ -77,16 +114,19 @@ bool WordAna::scan(QString s, Token& tk)
            // print(S);
             qDebug() << Qt::endl;
             qDebug() << Qt::endl;
+            // 设置 Token 类型为结束符
             tk.type = TokenType::O;
             tk.index = -1;
             tk.value = "#";
         }
         else if ((s[i] <= 'Z' && s[i] >= 'A') || (s[i] <= 'z' && s[i] >= 'a') || s[i] == '_')
         {
+            // 处理标识符或关键字
             i += isI(s, i, tk);
         }
         else if (s[i] <= '9' && s[i] >= '0')
         {
+            // 处理常数
             int existance = isC(s, i, tk);
             if (existance == -1)
             {
@@ -98,6 +138,7 @@ bool WordAna::scan(QString s, Token& tk)
         }
         else if (s[i] == '\'')
         {
+            // 处理字符常量
             int existance = isS(s, i, tk);
             if (existance == -1)
             {
@@ -109,6 +150,7 @@ bool WordAna::scan(QString s, Token& tk)
         }
         else if (s[i] == '\"')
         {
+            // 处理字符串常量
             int existance = isS(s, i, tk);
             if (existance == -1)
             {
@@ -119,6 +161,7 @@ bool WordAna::scan(QString s, Token& tk)
                 i += isS(s, i, tk);
         }
         else
+            // 处理界符
             i += isP(s, i, tk);
     }
     else
@@ -169,10 +212,22 @@ bool WordAna::scan(QString s, Token& tk)
         else
             i += isP(s, i, tk);
     }
+    // 更新扫描位置
     count = i;
     return true;
 }
 
+/**
+ * @brief 检查元素是否存在于向量中
+ *
+ * 遍历向量，检查指定元素是否存在于向量中，如果存在则返回其在向量中的位置（从 1 开始），
+ * 否则返回 0。
+ *
+ * @tparam T 元素的类型
+ * @param t 要检查的元素
+ * @param v 向量
+ * @return int 元素存在返回其位置（从 1 开始），不存在返回 0
+ */
 template<typename T>
 int WordAna::existT(T t, QVector<T> v)
 {
@@ -184,6 +239,18 @@ int WordAna::existT(T t, QVector<T> v)
     return 0;//不存在 返回0
 }
 
+/**
+ * @brief 识别标识符或关键字
+ *
+ * 从指定位置开始识别输入字符串中的标识符或关键字，
+ * 如果是关键字则将其标记为关键字类型的 Token，
+ * 如果是标识符则将其添加到标识符表中并标记为标识符类型的 Token。
+ *
+ * @param s 输入字符串
+ * @param i 起始位置
+ * @param tk 用于存储识别结果的 Token 对象
+ * @return int 识别的字符数量
+ */
 int WordAna::isI(QString s, int i, Token& tk)
 {
     // 参数校验
@@ -193,7 +260,7 @@ int WordAna::isI(QString s, int i, Token& tk)
 
     const int start = i;
 
-    // 使用QQChar方法代替直接字符比较
+    // 使用 QChar 方法代替直接字符比较
     while (i < s.length()) {
         const QChar c = s.at(i);
         if (!(c.isLetter() || c == '_' || (i > start && c.isDigit()))) {
@@ -215,7 +282,7 @@ int WordAna::isI(QString s, int i, Token& tk)
         tk.index = keywordIndex;
         tk.value = ident;
 
-        // 使用QString的arg()方法格式化字符串
+        // 使用 QString 的 arg() 方法格式化字符串
         Tokens.push_back(QString("(K %1)").arg(keywordIndex));
     }
     // 处理标识符
@@ -236,6 +303,17 @@ int WordAna::isI(QString s, int i, Token& tk)
     return i - start;
 }
 
+/**
+ * @brief 识别常数
+ *
+ * 从指定位置开始识别输入字符串中的常数，支持十进制、十六进制和科学计数法表示的常数，
+ * 将识别结果存储在 Token 对象中，并添加到常数表中。
+ *
+ * @param s 输入字符串
+ * @param i 起始位置
+ * @param tk 用于存储识别结果的 Token 对象
+ * @return int 识别的字符数量，出现错误返回 -1
+ */
 int WordAna::isC(QString s, int i, Token& tk)
 {
     int start = i;
@@ -329,6 +407,20 @@ int WordAna::isC(QString s, int i, Token& tk)
     }
     return i - start;
 }
+
+/**
+ * @brief 计算科学计数法表示的常数的值
+ *
+ * 根据输入的起始位置、结束位置、指数位置、操作符等信息，计算科学计数法表示的常数的值。
+ *
+ * @param start 起始位置
+ * @param end 结束位置
+ * @param loc 指数位置
+ * @param w 操作符（+ 或 -）
+ * @param s 输入字符串
+ * @param n_ope 操作符标志
+ * @return float 计算得到的常数值
+ */
 float WordAna::expOp(int start, int end, int loc, QChar w, QString s, int n_ope)
 {
     int front = 0; // 记录整数部分长度
@@ -364,6 +456,17 @@ float WordAna::expOp(int start, int end, int loc, QChar w, QString s, int n_ope)
     return static_cast<float>(baseindex * qPow(10, times));
 }
 
+/**
+ * @brief 识别界符
+ *
+ * 从指定位置开始识别输入字符串中的界符，处理单字符和双字符界符，
+ * 将识别结果存储在 Token 对象中，并添加到 Token 序列中。
+ *
+ * @param s 输入字符串
+ * @param i 起始位置
+ * @param tk 用于存储识别结果的 Token 对象
+ * @return int 识别的字符数量（1 或 2）
+ */
 int WordAna::isP(QString s, int i, Token& tk)
 {
     int re = 0;
@@ -403,8 +506,14 @@ int WordAna::isP(QString s, int i, Token& tk)
     return re;
 }
 
-
-
+/**
+ * @brief 将十六进制字符转换为对应的整数值
+ *
+ * 将十六进制字符（0 - 9, a - f, A - F）转换为对应的整数值。
+ *
+ * @param ch 十六进制字符
+ * @return int 对应的整数值
+ */
 int WordAna::val(QChar ch)
 {
     // 使用 Unicode 感知的字符检查方法
@@ -423,6 +532,17 @@ int WordAna::val(QChar ch)
     return 0;
 }
 
+/**
+ * @brief 识别字符或字符串常量
+ *
+ * 从指定位置开始识别输入字符串中的字符或字符串常量，
+ * 将识别结果存储在 Token 对象中，并添加到字符或字符串常量表中。
+ *
+ * @param s 输入字符串
+ * @param i 起始位置
+ * @param tk 用于存储识别结果的 Token 对象
+ * @return int 识别的字符数量，出现错误返回 -1
+ */
 int WordAna::isS(QString s, int i, Token& tk)
 {
     int start = i;

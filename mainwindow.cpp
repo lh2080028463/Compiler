@@ -10,10 +10,9 @@
 
 extern QVector <QString> Tokens;
 extern QString input_s;
-// 界符集合
 const QVector<QChar> other = {
     '-','/','(',')','=','<','+','*','>','=',',',';',
-    '{','}','\'','\"','&','|','[',']','!','\n',' ','#'
+    '{','}','\'','\"','!','\n',' ','#'
 };
 
 MainWindow::MainWindow(QWidget *parent)
