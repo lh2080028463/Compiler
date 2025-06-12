@@ -148,8 +148,8 @@ void optimize::cleardag(){//清空dag
  * @brief 将标记 A 添加至指定节点 n 上，并删除无用标记
  *
  * 若标记 A 已存在于 DAG 中其他节点上，则删除该节点上的标记 A。
- * 将标记 A 添加到节点 n 的主标记或附加标记中，若主标记为临时变量，
- * 附加标记为非临时变量，则互换两者。
+ * 将标记 A 添加到节点 n 的主标记或附加标记中
+ * 若主标记为临时变量，附加标记为非临时变量，则互换两者。
  *
  * @param n 要添加标记的节点编号
  * @param A 要添加的标记名称
@@ -216,7 +216,7 @@ void optimize::makeleaf(QString B, QString typ){//构造叶节点
     dag.node[dag.num - 1].m_sign.name = B;
     // 定义类型 - 临时变量、非临时变量、数字
     dag.node[dag.num - 1].m_sign.type = typ;
-    // 定义节点标识
+    // 定义节点id
     dag.node[dag.num - 1].id = dag.num;
 }
 
@@ -230,7 +230,7 @@ void optimize::makeleaf(QString B, QString typ){//构造叶节点
  */
 void optimize::delnode(int n){//删除节点n
     // 主标记名称置为空
-    dag.node[n - 1].m_sign.name = "";
+    dag.node[n - 1].m_sign.name.clear();
     // 节点标识置为 0
     dag.node[n - 1].id = 0;
     // 后面结点向前平移
@@ -250,15 +250,15 @@ void optimize::delnode(int n){//删除节点n
     // 将最后一个结点置空
     dag.node[dag.num - 1].id = 0;
     dag.node[dag.num - 1].left = 0;
-    dag.node[dag.num - 1].m_sign.name = "";
-    dag.node[dag.num - 1].m_sign.type = "";
-    dag.node[dag.num - 1].op = "";
+    dag.node[dag.num - 1].m_sign.name.clear();
+    dag.node[dag.num - 1].m_sign.type.clear();
+    dag.node[dag.num - 1].op.clear();
     dag.node[dag.num - 1].right = 0;
 
     for (int j = 0; j < LEN; j++){
         // 清除附加标记
-        dag.node[dag.num - 1].sign[j].name = "";
-        dag.node[dag.num - 1].sign[j].type = "";
+        dag.node[dag.num - 1].sign[j].name.clear();
+        dag.node[dag.num - 1].sign[j].type.clear();
     }
     // 结点总数减 1
     dag.num--;
@@ -274,13 +274,12 @@ void optimize::delnode(int n){//删除节点n
  * @param File 用于输出四元式的文件流
  */
 void optimize::blockqua(int block, std::fstream& File){//生成block块中优化后的四元式
-    // stringstream ss;
     int i, j, k = 0;
     int numB = 0, l, r;
     // 遍历 DAG
     for (i = 0; i < dag.num; i++){
         k = 0;
-        if (dag.node[i].op == ""){
+        if (!dag.node[i].op.length()){
             // 是叶子节点，赋值语句
             for (j = 0; j < LEN; j++){
                 if (dag.node[i].sign[j].type == "1"){
@@ -296,9 +295,6 @@ void optimize::blockqua(int block, std::fstream& File){//生成block块中优化
                 if (dag.node[i].m_sign.type == "3" || (dag.node[i].m_sign.type == "1" && k == 1)){
                     // 输出赋值四元式到文件
                     File << block << " (=," << dag.node[i].m_sign.name.toStdString() << ",_," << dag.node[i].sign[numB].name.toStdString() << ")\n";
-                    // ss.str("");
-                    // ss << "( =, " << dag.node[i].m_sign.name << ", _, " << dag.node[i].sign[numB].name << " )" << endl;
-                    // cout << ss.str() << endl;
                     QString ss=QString("( =, %1, _, %2 )").arg(dag.node[i].m_sign.name).arg(dag.node[i].sign[numB].name);
                     // 输出四元式信息到调试窗口
                     qDebug() << ss;
@@ -325,9 +321,6 @@ void optimize::blockqua(int block, std::fstream& File){//生成block块中优化
             r = dag.node[i].right;
             // 输出运算四元式到文件
             File << block << " (" << dag.node[i].op.toStdString() << "," << dag.node[l - 1].m_sign.name.toStdString() << "," << dag.node[r - 1].m_sign.name.toStdString() << "," << dag.node[i].m_sign.name.toStdString() << ")\n";
-            // ss.str("");
-            // ss << "( " << dag.node[i].op << ", " << dag.node[l - 1].m_sign.name << ", " << dag.node[r - 1].m_sign.name << ", " << dag.node[i].m_sign.name << " )" << endl;
-            // cout << ss.str() << endl;
             QString ss=QString("( %1, %2, %3, %4 )").arg(dag.node[i].op).arg(dag.node[l - 1].m_sign.name).arg(dag.node[r - 1].m_sign.name).arg(dag.node[i].m_sign.name);
             // 输出四元式信息到调试窗口
             qDebug() << ss;
@@ -356,7 +349,6 @@ void optimize::blockqua(int block, std::fstream& File){//生成block块中优化
  * @param File 用于输出四元式的文件流
  */
 void optimize::optqua(int block_num, std::fstream& File){//优化四元式
-    // stringstream ss;
     // 新建节点 id
     int newleft, newright;
     int i = 0, j, k;
@@ -374,9 +366,6 @@ void optimize::optqua(int block_num, std::fstream& File){//优化四元式
             // 操作符类别为 if,el,ie,wh,do,we,lb,gt,ret,fun,endfun 等
             // 生成四元式语句在文件中
             File << qua[i].block << " (" << qua[i].op.toStdString() << "," << qua[i].num1.name.toStdString() << "," << qua[i].num2.name.toStdString() << "," << qua[i].ans.name.toStdString() << ")\n";
-            // ss.str("");
-            // ss << "( " << qua[i].op << ", " << qua[i].num1.name << ", " << qua[i].num2.name << ", " << qua[i].ans.name << " )" << endl;
-            // cout << ss.str() << endl;
             QString ss=QString("( %1, %2, %3, %4 )").arg(qua[i].op).arg(qua[i].num1.name).arg(qua[i].num2.name).arg(qua[i].ans.name);
             // 输出四元式信息到调试窗口
             qDebug() << ss;
@@ -469,9 +458,6 @@ void optimize::optqua(int block_num, std::fstream& File){//优化四元式
         for (auto j = type3.begin(); j != type3.end(); j++){
             int i = *j;
             File << qua[i].block << " (" << qua[i].op.toStdString() << "," << qua[i].num1.name.toStdString() << "," << qua[i].num2.name.toStdString() << "," << qua[i].ans.name.toStdString() << ")\n";
-            // ss.str("");
-            // ss << "( " << qua[i].op << ", " << qua[i].num1.name << ", " << qua[i].num2.name << ", " << qua[i].ans.name << " )" << endl;
-            // cout << ss.str() << endl;
             QString ss=QString("( %1, %2, %3, %4 )").arg(qua[i].op).arg(qua[i].num1.name).arg(qua[i].num2.name).arg(qua[i].ans.name);
             qDebug() << ss;
             // 存入数组中
