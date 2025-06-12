@@ -51,8 +51,9 @@ MainWindow::MainWindow(QWidget *parent)
 
         int LENGTH=input_s.length();
         nextflag=1;
+        int eleflag=0;
         for(int i=0;i<LENGTH;i++){
-            if((input_s[i]>='a'&&input_s<='z')||(input_s[i]>='A'&&input_s[i]<='Z'))continue;
+            if((input_s[i]>='a'&&input_s[i]<='z')||(input_s[i]>='A'&&input_s[i]<='Z'))continue;
             if(input_s[i]>='0'&&input_s[i]<='9')continue;
             int failflag=1;
             for(int j=0;j<other.size();j++){
@@ -62,15 +63,18 @@ MainWindow::MainWindow(QWidget *parent)
                 }
             }
             if(failflag){
+                eleflag=i;
                 nextflag=0;
                 break;
             }
         }
         if(nextflag==0){//含非法字符
+            QString infos="输入非法字符: ";
+            infos.append(input_s[eleflag]);
             QMessageBox::critical(
                 this,
                 "错误信息",
-                "输入非法字符"
+                infos
                 );
         }
         else{
