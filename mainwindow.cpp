@@ -69,12 +69,13 @@ MainWindow::MainWindow(QWidget *parent)
             }
         }
         if(nextflag==0){//含非法字符
-            QString infos="输入非法字符: ";
-            infos.append(input_s[eleflag]);
+            extern QString err_inf;
+            err_inf="输入非法字符: ";
+            err_inf.append(input_s[eleflag]);
             QMessageBox::critical(
                 this,
                 "错误信息",
-                infos
+                err_inf
                 );
         }
         else{
