@@ -1,21 +1,13 @@
 #include "objectcode.h"
 
-// ObjectCode 类的默认构造函数，目前为空实现
-ObjectCode::ObjectCode() {}
 
-// 再次包含头文件，可能存在重复包含问题，建议检查头文件保护
+
 #include "ObjectCode.h"
-// 包含 Qt 字符串类头文件
 #include <QString>
-// 包含 Qt 动态数组类头文件
 #include <QVector>
-// 包含 Qt 映射类头文件
 #include <QMap>
-// 包含 Qt 栈类头文件
 #include <QStack>
-// 包含 Qt 调试输出类头文件
 #include<QDebug>
-// 包含 Qt 文件操作类头文件
 #include<QFile>
 
 // 使用标准库命名空间，可能会导致命名冲突，建议尽量避免
@@ -42,6 +34,9 @@ int ObjectCode::count = 1;
 QString RDL::R = "0";
 // 初始化 RDL 类的静态成员变量 active，用于表示寄存器中变量的活跃信息
 QString RDL::active = "0";
+
+
+ObjectCode::ObjectCode() {}
 
 /**
  * @brief 初始化相关数据结构和变量

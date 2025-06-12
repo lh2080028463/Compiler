@@ -94,26 +94,6 @@ bool WordAna::scan(QString s, Token& tk)
         i += jmpBlank(s, i);
         if (s[i] == '#')
         {
-            // 输出各类表信息
-            qDebug() << "Token:";
-            //print(Tokens);
-            qDebug() << Qt::endl;
-            qDebug() << "K:";
-            //print(K);
-            qDebug() << Qt::endl;
-            qDebug() << "P:";
-            //print(P);
-            qDebug() << Qt::endl;
-            qDebug() << "I:";
-            //print(I);
-            qDebug() << Qt::endl;
-            qDebug() << "C:";
-           // print(C);
-            qDebug() << Qt::endl;
-            qDebug() << "S:";
-           // print(S);
-            qDebug() << Qt::endl;
-            qDebug() << Qt::endl;
             // 设置 Token 类型为结束符
             tk.type = TokenType::O;
             tk.index = -1;

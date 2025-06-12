@@ -12,7 +12,7 @@ extern QVector <QString> Tokens;
 extern QString input_s;
 const QVector<QChar> other = {
     '-','/','(',')','=','<','+','*','>','=',',',';',
-    '{','}','\'','\"','!','\n',' ','#'
+    '{','}','\'','\"','!','\n',' ','#','\t'
 };
 
 MainWindow::MainWindow(QWidget *parent)
