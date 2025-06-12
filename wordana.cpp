@@ -95,7 +95,7 @@ bool WordAna::scan(QString s, Token& tk)
         if (s[i] == '#')
         {
             // 设置 Token 类型为结束符
-            tk.type = TokenType::O;
+            tk.type = TokenType::END;
             tk.index = -1;
             tk.value = "#";
         }
@@ -148,7 +148,7 @@ bool WordAna::scan(QString s, Token& tk)
     {
         if (s[i] == '#')
         {
-            tk.type = TokenType::O;
+            tk.type = TokenType::END;
             tk.index = -1;
             tk.value = "#";
         }

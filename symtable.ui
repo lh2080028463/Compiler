@@ -152,7 +152,7 @@
    <widget class="QPushButton" name="quitButton">
     <property name="geometry">
      <rect>
-      <x>500</x>
+      <x>220</x>
       <y>670</y>
       <width>111</width>
       <height>31</height>
@@ -292,7 +292,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
      <x>0</x>
      <y>0</y>
      <width>1024</width>
-     <height>18</height>
+     <height>25</height>
     </rect>
    </property>
   </widget>

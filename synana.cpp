@@ -5,14 +5,13 @@
 
 using namespace std;
 // 非终结符列表，存储文法中的非终结符
-QVector<QString> VNQList;
+QVector<QString> VNList;
 // 终结符列表，存储文法中的终结符
-QVector<QString> VTQList;
+QVector<QString> VTList;
 // LL(1) 分析表，格式为 {"E", {{"i", 1}, {"(", 1}}}
 // "E" 为行表头（非终结符），"i" 和 "(" 为列表头（终结符），1 为该表项内容（对应的产生式序号）
 QMap<QString, QMap<QString, int>> LL1Table;
-// grammar 按序号存储所有产生式右部
-QVector<QVector<QString>> grammarRight;
+QVector<QVector<QString>> grammarRight;// grammar 按序号存储所有产生式右部
 
 /**
  * @brief 对输入的程序进行语法分析
@@ -23,11 +22,12 @@ QVector<QVector<QString>> grammarRight;
  * @param program 待分析的程序代码
  * @return bool 若语法分析成功返回 true，否则返回 false
  */
+
 bool SynAna::AN(QString program)
 {
     extern QString err_inf;
     // 清空非终结符列表、终结符列表、LL(1) 分析表和产生式右部列表
-    VNQList.clear(); VTQList.clear();
+    VNList.clear(); VTList.clear();
     LL1Table.clear();
     grammarRight.clear();
     // 分析栈，用于模拟 LL(1) 分析过程
@@ -36,6 +36,7 @@ bool SynAna::AN(QString program)
     stack.push_back("#");
     // 开始符号入栈
     stack.push_back("<函数>");
+
     // 栈顶符号
     QString topSymbol;
     // 现在分析的单词
@@ -53,8 +54,7 @@ bool SynAna::AN(QString program)
     wordAna.clear();
     // 进行词法分析，获取第一个单词
     wordAna.scan(program, nowWord);
-    //qDebug() << nowWord.value ;
-    //qDebug() << "1" ;
+
     while (1)
     {
         // 获取栈顶符号
@@ -69,11 +69,8 @@ bool SynAna::AN(QString program)
                 || (topSymbol == "<无符号整数>" && nowWord.type == TokenType::C))
             {
                 lastWord = nowWord;
-                //qDebug() << lastWord.value ;
                 // 继续进行词法分析，获取下一个单词
                 wordAna.scan(program, nowWord);
-                //qDebug()<< nowWord.value ;
-
             }
             else
             {
@@ -165,7 +162,7 @@ bool SynAna::AN(QString program)
  */
 bool SynAna::isVN(QString str)
 {
-    if (find(VNQList.begin(), VNQList.end(), str) == VNQList.end())
+    if (find(VNList.begin(), VNList.end(), str) == VNList.end())
         return false;
     else
         return true;
@@ -179,7 +176,7 @@ bool SynAna::isVN(QString str)
  */
 bool SynAna::isVT(QString str)
 {
-    if (find(VTQList.begin(), VTQList.end(), str) == VTQList.end())
+    if (find(VTList.begin(), VTList.end(), str) == VTList.end())
         return false;
     else
         return true;
@@ -236,8 +233,8 @@ bool SynAna::GetLL1Table()
     QString temp;
     QVector<QString> tempRight, tempRightAll;
     // 清空非终结符列表和终结符列表
-    VNQList.clear();
-    VTQList.clear();
+    VNList.clear();
+    VTList.clear();
 
     // 打开文法文件
     QFile file("TextFile\\grammar.txt");
@@ -253,7 +250,7 @@ bool SynAna::GetLL1Table()
     while (!in.atEnd()) {
         in >> temp;
         // 将非终结符添加到非终结符列表
-        VNQList.push_back(temp);
+        VNList.push_back(temp);
         rightQList.push_back({});
         tempRight.clear();
         tempRightAll.clear();
@@ -263,7 +260,7 @@ bool SynAna::GetLL1Table()
                 grammar.push_back(tempRight);
                 grammarRight.push_back(tempRightAll);
                 rightQList.last().push_back(grammar.size() - 1);
-                leftQList.push_back(VNQList.size() - 1);
+                leftQList.push_back(VNList.size() - 1);
                 if (temp == "|") {
                     tempRight.clear();
                     tempRightAll.clear();
@@ -271,9 +268,9 @@ bool SynAna::GetLL1Table()
                 } else break;
             } else {
                 if ((temp[0] != '<' && temp[0] != '\"' && temp[0] != '$') || temp == "<" || temp == "\"") {
-                    if (!VTQList.contains(temp))
+                    if (!VTList.contains(temp))
                         // 将终结符添加到终结符列表
-                        VTQList.push_back(temp);
+                        VTList.push_back(temp);
                 }
                 if ((temp[0] != '\"' && temp[0] != '$') || temp == "\"")
                     tempRight.push_back(temp);
@@ -282,8 +279,8 @@ bool SynAna::GetLL1Table()
         }
     }
     // 添加特殊终结符
-    VTQList.push_back("<标识符>");
-    VTQList.push_back("<无符号整数>");
+    VTList.push_back("<标识符>");
+    VTList.push_back("<无符号整数>");
     file.close();
 
     // 打开文件，将非终结符、终结符和产生式右部信息写入文件
@@ -291,10 +288,10 @@ bool SynAna::GetLL1Table()
     if (file1.open(QIODevice::WriteOnly | QIODevice::Text)) {
         QTextStream out(&file1);
         out << "非终结符：\n";
-        for (const auto& vn : VNQList) out << vn << ' ';
+        for (const auto& vn : VNList) out << vn << ' ';
         out << '\n';
         out << "\n终结符：\n";
-        for (const auto& vt : VTQList) out << vt << ' ';
+        for (const auto& vt : VTList) out << vt << ' ';
         out << '\n';
         out << "\n右部：\n";
         int n = 1;
@@ -307,12 +304,12 @@ bool SynAna::GetLL1Table()
     }
 
     qDebug() << "非终结符：";
-    for (const auto& vn : VNQList)
+    for (const auto& vn : VNList)
         qDebug() << vn;
     qDebug();
 
     qDebug() << "终结符：";
-    for (const auto& vt : VTQList)
+    for (const auto& vt : VTList)
         qDebug() << vt;
     qDebug();
 
@@ -328,11 +325,11 @@ bool SynAna::GetLL1Table()
     QVector<QVector<QString>> FIRST(grammar.size());
 
     // 终结符 First 集为本身
-    for (const auto& vt : VTQList)
+    for (const auto& vt : VTList)
         FIRST_VNVT[vt] = {vt};
 
     // 非终结符 First 集为空
-    for (const auto& vn : VNQList)
+    for (const auto& vn : VNList)
         FIRST_VNVT[vn] = {};
 
     bool change = true;
@@ -368,7 +365,7 @@ bool SynAna::GetLL1Table()
             // 更新左部的 First 集
             for (auto k = tempFIRST_VNVT.begin(); k != tempFIRST_VNVT.end(); k++)
             {
-                QString tempVN = VNQList[leftQList[m]];
+                QString tempVN = VNList[leftQList[m]];
                 if (find(FIRST_VNVT[tempVN].begin(), FIRST_VNVT[tempVN].end(), *k) == FIRST_VNVT[tempVN].end())
                 {
                     FIRST_VNVT[tempVN].push_back(*k);
@@ -397,10 +394,10 @@ bool SynAna::GetLL1Table()
 
     // 求 Follow 集
     QMap<QString, QVector<QString>> FOLLOW;
-    for (const auto& vn : VNQList)
+    for (const auto& vn : VNList)
         FOLLOW[vn] = {};
     // 开始符号的 Follow 集包含 #
-    FOLLOW[VNQList.first()].push_back("#");
+    FOLLOW[VNList.first()].push_back("#");
 
     change = true;
     while (change) {
@@ -409,12 +406,12 @@ bool SynAna::GetLL1Table()
         for (auto j = grammar.begin(); j != grammar.end(); j++, m++)
         {
             // Trailer <- Follow(A)
-            QVector<QString> Trailer = FOLLOW[VNQList[leftQList[m]]];
+            QVector<QString> Trailer = FOLLOW[VNList[leftQList[m]]];
             // 从后往前遍历产生式右部
             for (auto i = j->rbegin(); i != j->rend(); i++)
             {
                 // 如果 bi 是非终结符，将其后跟着的单词 first 加到 follow 中
-                if (find(VNQList.begin(), VNQList.end(), *i) != VNQList.end())
+                if (find(VNList.begin(), VNList.end(), *i) != VNList.end())
                 {
                     // Follow(bi) += Trailer, 存入无重复元素
                     for (auto k = Trailer.begin(); k != Trailer.end(); k++)
@@ -455,7 +452,7 @@ bool SynAna::GetLL1Table()
     }
 
     qDebug() << "Follow 集：";
-    for (const auto& vn : VNQList) {
+    for (const auto& vn : VNList) {
         qDebug().noquote() << QString("%1: %2").arg(vn).arg(QStringList(FOLLOW[vn]).join(' '));
     }
     qDebug();
@@ -466,7 +463,7 @@ bool SynAna::GetLL1Table()
         QTextStream out(&file3);
         out << "Follow 集：" << Qt::endl;
 
-        for (auto i = VNQList.begin(); i != VNQList.end(); i++) {
+        for (auto i = VNList.begin(); i != VNList.end(); i++) {
             out << *i << ": ";
             for (auto j = FOLLOW[*i].begin(); j != FOLLOW[*i].end(); j++) {
                 out << *j << ' ';
@@ -489,7 +486,7 @@ bool SynAna::GetLL1Table()
         // 否则，select 集等于右部 first 集并上左部 follow 集
         else
         {
-            SELECT[i] = FOLLOW[VNQList[leftQList[i]]];
+            SELECT[i] = FOLLOW[VNList[leftQList[i]]];
             for (auto j = FIRST[i].begin(); j != FIRST[i].end(); j++)
             {
                 if (*j != "<空>")
@@ -528,7 +525,7 @@ bool SynAna::GetLL1Table()
     }
 
     // 检查是否为 LL(1) 文法
-    for (int i = 0; i < (int)VNQList.size(); i++)
+    for (int i = 0; i < (int)VNList.size(); i++)
     {
         QVector<QString> tempSelect;
         tempSelect.clear();
@@ -540,7 +537,7 @@ bool SynAna::GetLL1Table()
                     tempSelect.push_back(*k);
                 else
                 {
-                    qDebug() << "文法非 LL(1) 文法！请检查！\n" << "提示信息：左部" << VNQList[i];
+                    qDebug() << "文法非 LL(1) 文法！请检查！\n" << "提示信息：左部" << VNList[i];
                     return false;
                 }
             }
@@ -549,14 +546,14 @@ bool SynAna::GetLL1Table()
     qDebug() << "文法满足 LL(1) 文法要求。";
 
     // 构建 LL(1) 分析表
-    for (int i = 0; i < VNQList.size(); ++i) {
-        for (auto j :VTQList)
-            LL1Table[VNQList[i]][j] = -1;
-        LL1Table[VNQList[i]]["#"] = -1;
+    for (int i = 0; i < VNList.size(); ++i) {
+        for (auto j :VTList)
+            LL1Table[VNList[i]][j] = -1;
+        LL1Table[VNList[i]]["#"] = -1;
         for (int x : rightQList[i]) {
             for (const auto& k : SELECT[x]) {
-                if (VTQList.contains(k) || k == "#")
-                    LL1Table[VNQList[i]][k] = x;
+                if (VTList.contains(k) || k == "#")
+                    LL1Table[VNList[i]][k] = x;
             }
         }
     }
@@ -566,13 +563,13 @@ bool SynAna::GetLL1Table()
     if (file5.open(QIODevice::WriteOnly | QIODevice::Text)) {
         QTextStream out(&file5);
         out << "LL(1) 分析表\t";
-        for (const auto& vt : VTQList) out << vt << "\t\t";
+        for (const auto& vt : VTList) out << vt << "\t\t";
         out << "#\t\n";
-        for (const auto& vn : VNQList) {
+        for (const auto& vn : VNList) {
             out << vn;
             for (int k = vn.size(); k < 15; k++) out << ' ';
             out << '\t';
-            for (const auto& vt : VTQList)
+            for (const auto& vt : VTList)
                 out << LL1Table[vn][vt] << "\t\t";
             out << LL1Table[vn]["#"] << '\t';
             out << '\n';
